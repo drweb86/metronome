@@ -1,0 +1,142 @@
+﻿<Window x:Class="Metronome.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:localConverters="clr-namespace:Metronome.Converters"
+        xmlns:windows="clr-namespace:Metronome.Windows"
+        mc:Ignorable="d"
+        Title="Metronome#" Height="500" Width="700" Closed="OnClosed"
+        WindowStartupLocation="CenterScreen"
+        Icon="../Pictures/1453069499_Metronome.ico">
+    <Window.DataContext>
+        <windows:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <localConverters:DoubleToIntConverter x:Key="DoubleToIntConverter" />
+        <localConverters:TicksFileNameStripperConverter x:Key="TicksFileNameStripperConverter" />
+        <localConverters:PercentsConverter x:Key="PercentsConverter" />
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_About" 
+                        CommandParameter="{Binding}"  
+                        Command="{Binding ShowAboutWindowCommand}"/>
+                <MenuItem Header="_Web-site / Submit your sound"
+                        CommandParameter="{Binding}"
+                        Command="{Binding GoToProjectWebsiteCommand}"/>
+            </MenuItem>
+        </Menu>
+        <TabControl>
+            <TabItem Header="Metronome">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" VerticalAlignment="Top"
+                            Width="120"
+                            Height="120"
+                            CommandParameter="{Binding}"
+                            Command="{Binding ExecuteMetronomeAsyncCommand}" 
+                            IsEnabled="{Binding StartMetronomeButtonEnabled}">
+                            <Image Source="{Binding StartMetronomeButtonImageUri}" ToolTip="Start/Stop metronome"/>
+                            <Button.Template>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid>
+                                        <Ellipse />
+                                        <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                    </Button>
+                    <Grid Grid.Column="1" Margin="20 0 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Image VerticalAlignment="Center"
+                               Grid.Row="0" Grid.Column="0" 
+                               Width="32" Height="32" 
+                               Source="../Pictures/1452998965_volume-70px.png" 
+                               ToolTip="Volume (%)"/>
+                        <Slider VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Value="{Binding Volume}" Minimum="0.01" Maximum="1" />
+                        <Label Grid.Row="0" Grid.Column="2"  Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" />
+                        
+                        <Image VerticalAlignment="Center"
+                               Grid.Row="1" Grid.Column="0" 
+                               Width="32" Height="32" 
+                               Source="../Pictures/1452999134_Personal_trainer_1.png" 
+                               ToolTip="Delay (milliseconds)"/>
+                        <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"  Value="{Binding DelayMseconds}" Minimum="1" Maximum="4000" />
+                        <Label Grid.Row="1" Grid.Column="2"  Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
+
+                        <Image VerticalAlignment="Center"
+                               Grid.Row="2" Grid.Column="0" 
+                               Width="32" Height="32" 
+                               Source="../Pictures/1453071663_performance-clock-speed.png" 
+                               ToolTip="Latency (milliseconds, the less the better. Supported values by Windows 10 are 45-100)"/>
+                        <Slider VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"  Value="{Binding LatencyMiliseconds}" Minimum="20" Maximum="100" />
+                        <Label Grid.Row="2" Grid.Column="2"  Content="{Binding LatencyMiliseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Output Device / Sound">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0">Please, select output device:</Label>
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding MultimediaDevicesFriendlyNames}"
+                             SelectedItem="{Binding SelectedMultimediaDeviceFriendlyName}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073032_speaker.png" />
+                                    <Label Grid.Column="1" Content="{Binding}" VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Grid.Row="2"
+                            CommandParameter="{Binding}"
+                            Command="{Binding RefreshMultimediaDevicesCommand}">Refresh output devices</Button>
+                    <Label Grid.Row="3">Please, select sound:</Label>
+                    <ListBox Grid.Row="4" 
+                             ItemsSource="{Binding TickSoundFiles}"
+                             SelectedItem="{Binding SelectedTickSoundFile, Mode=TwoWay}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073705_music-note-sound.png" />
+                                    <Label Grid.Column="1" Content="{Binding Converter={StaticResource TicksFileNameStripperConverter}}" VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
