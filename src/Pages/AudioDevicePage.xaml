@@ -27,7 +27,7 @@
                 ToolTip="Refreshes output devices list">Refresh</Button>
             
             <Label>Please, select output device:</Label>
-            <ListBox MaxHeight="100"
+            <ListBox
                 ItemsSource="{Binding MultimediaDevicesFriendlyNames}"
                 SelectedItem="{Binding SelectedMultimediaDeviceFriendlyName}">
                 <ListBox.ItemTemplate>

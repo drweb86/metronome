@@ -16,11 +16,16 @@ namespace Metronome.Pages
         private bool _initialized;
         public AudioDevicePageViewModel()
         {
-            MultimediaDevicesFriendlyNames = Controller.Model.MultimediaDevicesFriendlyNames;
-            SelectedMultimediaDeviceFriendlyName = Controller.Model.SelectedMultimediaDeviceFriendlyName;
-            LatencyMiliseconds = Controller.Model.LatencyMseconds;
-
-            _initialized = true;
+            try
+            {
+                MultimediaDevicesFriendlyNames = Controller.Model.MultimediaDevicesFriendlyNames;
+                SelectedMultimediaDeviceFriendlyName = Controller.Model.SelectedMultimediaDeviceFriendlyName;
+                LatencyMiliseconds = Controller.Model.LatencyMseconds;
+            }
+            finally
+            {
+                _initialized = true;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

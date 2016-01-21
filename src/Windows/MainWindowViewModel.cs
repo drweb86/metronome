@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Metronome.Annotations;
@@ -15,17 +16,20 @@ namespace Metronome.Windows
         private readonly bool _initialized;
         public MainWindowViewModel()
         {
-            Controller = Controller.Instance;
+            try
+            {
+                Controller = Controller.Instance;
 
-            TickSoundFiles = Controller.Model.TickSoundFiles;
-            SelectedTickSoundFile = Controller.Model.SelectedTickSoundFile;
-            DelayMseconds = Controller.Model.DelayMseconds;
-            Volume = Controller.Model.Volume;
-            PageUri = PagesHelper.GetAboutPageUri();
+                DelayMseconds = Controller.Model.DelayMseconds;
+                Volume = Controller.Model.Volume;
+                PageUri = PagesHelper.GetAboutPageUri();
 
-            StartMetronomeButtonImageUri = PicturesHelper.GetStart();
-
-            _initialized = true;
+                StartMetronomeButtonImageUri = PicturesHelper.GetStart();
+            }
+            finally
+            {
+                _initialized = true;
+            }
         }
 
         internal Controller Controller { get; }
@@ -72,54 +76,6 @@ namespace Metronome.Windows
             set
             {
                 SetValue(DelayMsecondsProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Tick Sound Files
-
-        public static readonly DependencyProperty TickSoundFilesProperty = DependencyProperty.Register(
-            "TickSoundFiles", typeof (IEnumerable<string>), typeof (MainWindowViewModel), new PropertyMetadata(default(IEnumerable<string>)));
-
-        public IEnumerable<string> TickSoundFiles
-        {
-            get { return (IEnumerable<string>) GetValue(TickSoundFilesProperty); }
-            set
-            {
-                SetValue(TickSoundFilesProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Selected Tick Sound File
-
-        public static readonly DependencyProperty SelectedTickSoundFileProperty = DependencyProperty.Register(
-            "SelectedTickSoundFile", typeof (string), typeof (MainWindowViewModel), 
-            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectTickSound));
-
-        private static void OnSelectTickSound(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = ((MainWindowViewModel)d);
-            if (viewModel._initialized)
-            {
-                viewModel.Controller.ChangeSelectedTickSoundFile((string)e.NewValue);
-                if (viewModel.CheckSettingsChangeCommand.CanExecute(viewModel))
-                {
-                    viewModel.CheckSettingsChangeCommand.Execute(viewModel);
-                }
-            }
-        }
-
-        public string SelectedTickSoundFile
-        {
-            get { return (string) GetValue(SelectedTickSoundFileProperty); }
-            set
-            {
-                SetValue(SelectedTickSoundFileProperty, value);
                 OnPropertyChanged();
             }
         }
@@ -179,15 +135,16 @@ namespace Metronome.Windows
 
         #region Commands
 
-        public ICommand CheckSettingsChangeCommand { get; } = new CheckSettingsChangeActionCommand();
+        public ICommand CheckSettingsChangeCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
+            vm => Task.Run(() => vm.Controller.TestSound()));
         public IStoppableInfiniteCommand ExecuteMetronomeAsyncCommand { get; } = new ExecuteMetronomeAsyncCommand();
         public ICommand CloseApplicationCommand { get; } = new CloseApplicationCommand();
         public ICommand NavigateToAboutPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
-            vm => vm.PageUri = PagesHelper.GetAboutPageUri(),
-            vm => true);
+            vm => vm.PageUri = PagesHelper.GetAboutPageUri());
         public ICommand NavigateToAudioDevicePageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
-            vm => vm.PageUri = PagesHelper.GetAudioDevicePageUri(),
-            vm => true);
+            vm => vm.PageUri = PagesHelper.GetAudioDevicePageUri());
+        public ICommand NavigateToAudioFilesPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
+            vm => vm.PageUri = PagesHelper.GetAudioFilesPageUri());
 
         #endregion
 

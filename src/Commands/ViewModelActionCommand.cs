@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
 
 namespace Metronome.Commands
 {
@@ -16,6 +15,10 @@ namespace Metronome.Commands
 
             _execute = execute;
             _canExecute = canExecute;
+        }
+
+        public ViewModelActionCommand(Action<TViewModel> execute): this(execute, vm=>true)
+        {
         }
 
         #endregion

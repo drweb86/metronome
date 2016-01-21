@@ -16,5 +16,10 @@
         {
             return $"pack://application:,,,../Pages/{pageName}";
         }
+
+        public static string GetAudioFilesPageUri()
+        {
+            return GetPageUri("AudioFilesPage.xaml");
+        }
     }
 }

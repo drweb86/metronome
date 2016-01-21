@@ -12,17 +12,6 @@ namespace Metronome.Commands
             _backgroundWorker.CancelAsync();
         }
 
-        public bool IsRunning
-        {
-            get
-            {
-                if (_backgroundWorker == null)
-                    return false;
-
-                return _backgroundWorker.IsBusy; 
-            }
-        }
-
         private readonly BackgroundWorker _backgroundWorker = new BackgroundWorker();
         public ExecuteMetronomeAsyncCommand()
         {

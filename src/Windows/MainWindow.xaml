@@ -14,11 +14,18 @@
     </Window.DataContext>
     <Window.Resources>
         <localConverters:DoubleToIntConverter x:Key="DoubleToIntConverter" />
-        <localConverters:TicksFileNameStripperConverter x:Key="TicksFileNameStripperConverter" />
         <localConverters:PercentsConverter x:Key="PercentsConverter" />
     </Window.Resources>
     <StackPanel Orientation="Horizontal">
         <StackPanel>
+            <Button Width="45" Height="45"
+                CommandParameter="{Binding}"  
+                Command="{Binding NavigateToAudioFilesPageCommand}">
+                <Image Width="24" Height="24" 
+                    Source="../Pictures/1453073705_music-note-sound.png" 
+                    ToolTip="Select Audio File..."/>
+            </Button>
+            
             <Button Width="45" Height="45"
                 CommandParameter="{Binding}"  
                 Command="{Binding NavigateToAudioDevicePageCommand}">
@@ -90,27 +97,6 @@
                             <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"  Value="{Binding DelayMseconds}" Minimum="1" Maximum="4000" />
                             <Label Grid.Row="1" Grid.Column="2"  Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
                         </Grid>
-                    </Expander>
-                    <Expander Header="Audio file...">
-                        <StackPanel>
-                        <Label>Please, select sound:</Label>
-                        <ListBox  MaxHeight="100"
-                                     ItemsSource="{Binding TickSoundFiles}"
-                                     SelectedItem="{Binding SelectedTickSoundFile, Mode=TwoWay}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073705_music-note-sound.png" />
-                                                <Label Grid.Column="1" Content="{Binding Converter={StaticResource TicksFileNameStripperConverter}}" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                        </StackPanel>
                     </Expander>
         </StackPanel>
         </StackPanel>
