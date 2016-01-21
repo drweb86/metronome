@@ -1,0 +1,66 @@
+﻿<Page x:Class="Metronome.Pages.AudioDevicePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Metronome.Pages"
+      xmlns:converters="clr-namespace:Metronome.Converters"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="Select Audio Device">
+    <Page.Resources>
+        <ResourceDictionary><!--Adding resource without dictionary is not working for pages. seems wpf bug.-->
+            <converters:DoubleToIntConverter x:Key="DoubleToIntConverter" />
+        </ResourceDictionary>
+    </Page.Resources>
+    <Page.DataContext>
+        <local:AudioDevicePageViewModel />
+    </Page.DataContext>
+    <Grid>
+        <StackPanel>
+            <Button
+                Padding="10 5 10 5"
+                Margin="0 0 0 20"
+                HorizontalAlignment="Left"
+                CommandParameter="{Binding}"
+                Command="{Binding RefreshMultimediaDevicesCommand}"
+                ToolTip="Refreshes output devices list">Refresh</Button>
+            
+            <Label>Please, select output device:</Label>
+            <ListBox MaxHeight="100"
+                ItemsSource="{Binding MultimediaDevicesFriendlyNames}"
+                SelectedItem="{Binding SelectedMultimediaDeviceFriendlyName}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073032_speaker.png" />
+                            <Label Grid.Column="1" Content="{Binding}" VerticalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Margin="0 0 0 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Image VerticalAlignment="Center"
+                                   Grid.Column="0" 
+                                   Width="32" Height="32" 
+                                   Source="../Pictures/1453071663_performance-clock-speed.png" 
+                                   ToolTip="Latency (milliseconds, the less the better. Supported values by Windows 10 are 45-100)"/>
+                <Slider VerticalAlignment="Center" Grid.Column="1"  Value="{Binding LatencyMiliseconds}" Minimum="20" Maximum="100" 
+                        PreviewMouseUp="OnLatencySliderMouseUp" />
+                <Label Grid.Column="2" Content="{Binding LatencyMiliseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,19 +1,21 @@
-﻿using Metronome.Windows;
+﻿using Metronome.Pages;
 
 namespace Metronome.Commands
 {
-    class RefreshMultimediaDevicesActionCommand : ViewModelActionCommand<MainWindowViewModel>
+    class RefreshMultimediaDevicesActionCommand : ViewModelActionCommand<AudioDevicePageViewModel>
     {
         public RefreshMultimediaDevicesActionCommand() : base(RefreshOutputDevices, vm=>true)
         {
         }
 
-        private static void RefreshOutputDevices(MainWindowViewModel viewModel)
+        private static void RefreshOutputDevices(AudioDevicePageViewModel viewModel)
         {
-            viewModel.Controller.LoadAvailableSoundDevices();
+            var controller = Controller.Instance;
 
-            viewModel.MultimediaDevicesFriendlyNames = viewModel.Controller.Model.MultimediaDevicesFriendlyNames;
-            viewModel.SelectedMultimediaDeviceFriendlyName = viewModel.Controller.Model.SelectedMultimediaDeviceFriendlyName;
+            controller.LoadAvailableSoundDevices();
+
+            viewModel.MultimediaDevicesFriendlyNames = controller.Model.MultimediaDevicesFriendlyNames;
+            viewModel.SelectedMultimediaDeviceFriendlyName = controller.Model.SelectedMultimediaDeviceFriendlyName;
         }
     }
 }

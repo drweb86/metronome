@@ -43,7 +43,6 @@ namespace Metronome.Commands
             else
             {
                 _cachedViewModel.StartMetronomeButtonImageUri = PicturesHelper.GetStop();
-
                 _backgroundWorker.RunWorkerAsync();
             }
         }
@@ -52,8 +51,6 @@ namespace Metronome.Commands
         protected override bool OnCanExecute(MainWindowViewModel viewModel)
         {
             if (_backgroundWorker.CancellationPending)
-                return false;
-            if (string.IsNullOrWhiteSpace(viewModel.SelectedMultimediaDeviceFriendlyName))
                 return false;
             if (string.IsNullOrWhiteSpace(viewModel.Controller.Model.SelectedTickSoundFile))
                 return false;

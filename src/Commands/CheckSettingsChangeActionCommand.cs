@@ -14,9 +14,6 @@ namespace Metronome.Commands
             if (string.IsNullOrWhiteSpace(viewModel.SelectedTickSoundFile))
                 return false;
 
-            if (string.IsNullOrWhiteSpace(viewModel.SelectedMultimediaDeviceFriendlyName))
-                return false;
-
             if (viewModel.ExecuteMetronomeAsyncCommand.IsRunning)
                 return false;
 
@@ -25,13 +22,7 @@ namespace Metronome.Commands
 
         private static void CheckSettingsChange(MainWindowViewModel viewModel)
         {
-            // because of execution in other thread.
-            string selectedMultimediaDeviceFriendlyName = viewModel.SelectedMultimediaDeviceFriendlyName;
-            string selectedTickSoundFile = viewModel.SelectedTickSoundFile;
-
-            Task.Run(() => viewModel.Controller.TestSound(
-                selectedMultimediaDeviceFriendlyName,
-                selectedTickSoundFile));
+            Task.Run(() => viewModel.Controller.TestSound());
         }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using Metronome.Services;
 using NAudio.CoreAudioApi;
-using NAudio.Wave;
 
 namespace Metronome
 {
@@ -90,32 +88,13 @@ namespace Metronome
         public void ProduceMetronomeSounds(Func<bool> cancel)
         {
             new MetronomeService()
-                .ProduceSounds(cancel, Model.ToSettings);
+                .Run(cancel, Model.ToSettings);
         }
 
-        public void TestSound(string deviceFriendlyName, string soundFile)
+        public void TestSound()
         {
-            if (string.IsNullOrWhiteSpace(deviceFriendlyName))
-                throw new ArgumentException(deviceFriendlyName);
-            if (string.IsNullOrWhiteSpace(deviceFriendlyName))
-                throw new ArgumentException(soundFile);
-
-            //this code is executed in different thread. thats why searching for devices again.
-            var enumerator = new MMDeviceEnumerator();
-            
-            var device = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)
-                .First(item => item.FriendlyName == deviceFriendlyName);
-
-            using (WasapiOut player = new WasapiOut(device, AudioClientShareMode.Shared, false, Model.LatencyMseconds))
-            using (WaveStream mainOutputStream = FileReaderFactory.Create(soundFile))
-            using (WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream))
-            { 
-                player.Init(volumeStream);
-                volumeStream.Volume = Model.Volume;
-                player.Play();
-
-                Thread.Sleep(1000);
-            }
+            new MetronomeService()
+                .Test(Model.ToSettings());
         }
 
         public void SaveSettings()

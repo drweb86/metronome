@@ -6,8 +6,7 @@
       xmlns:local="clr-namespace:Metronome.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="About"
-      ShowsNavigationUI="False">
+      Title="About Metronome#">
     <Page.DataContext>
         <local:AboutPageViewModel />
     </Page.DataContext>
@@ -18,7 +17,8 @@
         </Grid.RowDefinitions>
         <Button
             HorizontalAlignment="Left"
-            Margin="20 20 20 20"
+            Margin="0 0 0 20"
+            Padding="10 5 10 5"
             Content="Go to Web-site / Submit your sound"
             CommandParameter="{Binding}"
             Command="{Binding GoToProjectWebsiteCommand}"/>

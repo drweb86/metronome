@@ -17,20 +17,31 @@
         <localConverters:TicksFileNameStripperConverter x:Key="TicksFileNameStripperConverter" />
         <localConverters:PercentsConverter x:Key="PercentsConverter" />
     </Window.Resources>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel>
-                <Button Width="45" Height="45"
-                        CommandParameter="{Binding}"  
-                        Command="{Binding NavigateToAboutPageCommand}">
-                    <Image Width="24" Height="24" 
-                           Source="../Pictures/1453405468_information.png" 
-                           ToolTip="About Metronome#"/>
-                </Button>
-                <Button>2</Button>
-                <Button>3</Button>
-            </StackPanel>
+    <StackPanel Orientation="Horizontal">
+        <StackPanel>
+            <Button Width="45" Height="45"
+                CommandParameter="{Binding}"  
+                Command="{Binding NavigateToAudioDevicePageCommand}">
+                <Image Width="24" Height="24" 
+                    Source="../Pictures/1453073032_speaker.png" 
+                    ToolTip="Select Audio Device..."/>
+            </Button>
+                
+            <Button Width="45" Height="45"
+                CommandParameter="{Binding}"  
+                Command="{Binding NavigateToAboutPageCommand}">
+                <Image Width="24" Height="24" 
+                    Source="../Pictures/1453405468_information.png" 
+                    ToolTip="About Metronome#"/>
+            </Button>
+            <Button>2</Button>
+            <Button>3</Button>
+        </StackPanel>
 
-            <Frame Source="{Binding PageUri}" />
+        <Frame 
+            Margin="20 5 20 5"
+            Source="{Binding PageUri}" 
+            NavigationUIVisibility="Hidden" />
             
             <StackPanel>
                     <Button Margin="50 50 50 50"
@@ -51,7 +62,7 @@
                                 </ControlTemplate>
                             </Button.Template>
                     </Button>
-                    <Expander Header="Volume, delay and latency...">
+                    <Expander Header="Volume, delay...">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -59,7 +70,6 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
@@ -79,14 +89,6 @@
                                    ToolTip="Delay (milliseconds)"/>
                             <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"  Value="{Binding DelayMseconds}" Minimum="1" Maximum="4000" />
                             <Label Grid.Row="1" Grid.Column="2"  Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
-
-                            <Image VerticalAlignment="Center"
-                                   Grid.Row="2" Grid.Column="0" 
-                                   Width="32" Height="32" 
-                                   Source="../Pictures/1453071663_performance-clock-speed.png" 
-                                   ToolTip="Latency (milliseconds, the less the better. Supported values by Windows 10 are 45-100)"/>
-                            <Slider VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"  Value="{Binding LatencyMiliseconds}" Minimum="20" Maximum="100" />
-                            <Label Grid.Row="2" Grid.Column="2"  Content="{Binding LatencyMiliseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
                         </Grid>
                     </Expander>
                     <Expander Header="Audio file...">
@@ -108,30 +110,6 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
-                        </StackPanel>
-                    </Expander>
-                    <Expander Header="Output audio device...">
-                        <StackPanel>
-                            <Label>Please, select output device:</Label>
-                                <ListBox MaxHeight="100"
-                                     ItemsSource="{Binding MultimediaDevicesFriendlyNames}"
-                                     SelectedItem="{Binding SelectedMultimediaDeviceFriendlyName}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073032_speaker.png" />
-                                            <Label Grid.Column="1" Content="{Binding}" VerticalAlignment="Center" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                            <Button
-                                    CommandParameter="{Binding}"
-                                    Command="{Binding RefreshMultimediaDevicesCommand}">Refresh output devices</Button>
                         </StackPanel>
                     </Expander>
         </StackPanel>

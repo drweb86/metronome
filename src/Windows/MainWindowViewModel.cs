@@ -19,11 +19,8 @@ namespace Metronome.Windows
 
             TickSoundFiles = Controller.Model.TickSoundFiles;
             SelectedTickSoundFile = Controller.Model.SelectedTickSoundFile;
-            MultimediaDevicesFriendlyNames = Controller.Model.MultimediaDevicesFriendlyNames;
-            SelectedMultimediaDeviceFriendlyName = Controller.Model.SelectedMultimediaDeviceFriendlyName;
             DelayMseconds = Controller.Model.DelayMseconds;
             Volume = Controller.Model.Volume;
-            LatencyMiliseconds = Controller.Model.LatencyMseconds;
             PageUri = PagesHelper.GetAboutPageUri();
 
             StartMetronomeButtonImageUri = PicturesHelper.GetStart();
@@ -32,30 +29,6 @@ namespace Metronome.Windows
         }
 
         internal Controller Controller { get; }
-
-        #region Latency
-
-        public static readonly DependencyProperty LatencyMilisecondsProperty = DependencyProperty.Register(
-            "LatencyMiliseconds", typeof(double), typeof(MainWindowViewModel),
-            new FrameworkPropertyMetadata(default(double), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnChangeLatency));
-
-        private static void OnChangeLatency(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = ((MainWindowViewModel)d);
-            viewModel.Controller.ChangeLatency((int)(double)e.NewValue);
-        }
-
-        public double LatencyMiliseconds
-        {
-            get { return (double)GetValue(LatencyMilisecondsProperty); }
-            set
-            {
-                SetValue(LatencyMilisecondsProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
 
         #region Volume
 
@@ -153,54 +126,6 @@ namespace Metronome.Windows
 
         #endregion
 
-        #region Selected Multimedia Device Friendly Name
-
-        public static readonly DependencyProperty SelectedMultimediaDeviceFriendlyNameProperty = DependencyProperty.Register(
-            "SelectedMultimediaDeviceFriendlyName", typeof (string), typeof (MainWindowViewModel), 
-            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectMultimediaDevice));
-
-        private static void OnSelectMultimediaDevice(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = ((MainWindowViewModel) d);
-            if (viewModel._initialized)
-            {
-                viewModel.Controller.Model.SelectedMultimediaDeviceFriendlyName = (string) e.NewValue;
-                if (viewModel.CheckSettingsChangeCommand.CanExecute(viewModel))
-                {
-                    viewModel.CheckSettingsChangeCommand.Execute(viewModel);
-                }
-            }
-        }
-
-        public string SelectedMultimediaDeviceFriendlyName
-        {
-            get { return (string) GetValue(SelectedMultimediaDeviceFriendlyNameProperty); }
-            set
-            {
-                SetValue(SelectedMultimediaDeviceFriendlyNameProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Multimedia Devices Friendly Names
-
-        public static readonly DependencyProperty MultimediaDevicesFriendlyNamesProperty = DependencyProperty.Register(
-            "MultimediaDevicesFriendlyNames", typeof (IEnumerable<string>), typeof (MainWindowViewModel), new PropertyMetadata(default(IEnumerable<string>)));
-
-        public IEnumerable<string> MultimediaDevicesFriendlyNames
-        {
-            get { return (IEnumerable<string>) GetValue(MultimediaDevicesFriendlyNamesProperty); }
-            set
-            {
-                SetValue(MultimediaDevicesFriendlyNamesProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
         #region Start Metronome Button Enabled
 
         public static readonly DependencyProperty StartMetronomeButtonEnabledProperty = DependencyProperty.Register(
@@ -255,11 +180,15 @@ namespace Metronome.Windows
         #region Commands
 
         public ICommand CheckSettingsChangeCommand { get; } = new CheckSettingsChangeActionCommand();
-        public ICommand RefreshMultimediaDevicesCommand { get; } = new RefreshMultimediaDevicesActionCommand();
         public IStoppableInfiniteCommand ExecuteMetronomeAsyncCommand { get; } = new ExecuteMetronomeAsyncCommand();
         public ICommand CloseApplicationCommand { get; } = new CloseApplicationCommand();
-        public ICommand NavigateToAboutPageCommand { get; } = new NavigateToAboutPageCommand();
-        
+        public ICommand NavigateToAboutPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
+            vm => vm.PageUri = PagesHelper.GetAboutPageUri(),
+            vm => true);
+        public ICommand NavigateToAudioDevicePageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
+            vm => vm.PageUri = PagesHelper.GetAudioDevicePageUri(),
+            vm => true);
+
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;

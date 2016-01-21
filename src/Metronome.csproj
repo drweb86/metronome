@@ -76,13 +76,16 @@
     </ApplicationDefinition>
     <Compile Include="Collections\CircleCollection.cs" />
     <Compile Include="Commands\CloseApplicationCommand.cs" />
-    <Compile Include="Commands\NavigateToAboutPageCommand.cs" />
     <Compile Include="Converters\PercentsConverter.cs" />
     <Compile Include="Converters\TicksFileNameStripperConverter.cs" />
     <Compile Include="Directories.cs" />
     <Compile Include="Pages\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AudioDevicePage.xaml.cs">
+      <DependentUpon>AudioDevicePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AudioDevicePageViewModel.cs" />
     <Compile Include="Pages\PagesHelper.cs" />
     <Compile Include="Pictures\PicturesHelper.cs" />
     <Compile Include="Services\Copyright.cs" />
@@ -91,6 +94,10 @@
     <Compile Include="Services\MetronomeSettings.cs" />
     <Compile Include="Services\MetronomeSettingsService.cs" />
     <Page Include="Pages\AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AudioDevicePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
