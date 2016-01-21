@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Metronome.Annotations;
+using Metronome.Commands;
 using Metronome.Services;
 
-namespace Metronome.Windows
+namespace Metronome.Pages
 {
-    class AboutWindowViewModel : DependencyObject, INotifyPropertyChanged
+    class AboutPageViewModel : DependencyObject, INotifyPropertyChanged
     {
-        public AboutWindowViewModel(IEnumerable<Copyright> copyrights)
+        public AboutPageViewModel()
         {
-            Copyrights = copyrights;
+            Copyrights = Controller.Instance.Model.Copyrights;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -27,8 +25,10 @@ namespace Metronome.Windows
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Copyrights
+
         public static readonly DependencyProperty CopyrightsProperty = DependencyProperty.Register(
-            "Copyrights", typeof (IEnumerable<Copyright>), typeof (AboutWindowViewModel), 
+            "Copyrights", typeof (IEnumerable<Copyright>), typeof (AboutPageViewModel), 
             new PropertyMetadata(default(IEnumerable<Copyright>)));
 
         public IEnumerable<Copyright> Copyrights
@@ -36,5 +36,15 @@ namespace Metronome.Windows
             get { return (IEnumerable<Copyright>) GetValue(CopyrightsProperty); }
             set { SetValue(CopyrightsProperty, value); }
         }
+
+        #endregion
+
+        #region Commands
+
+        public ICommand GoToProjectWebsiteCommand { get; } = new ViewModelActionCommand<AboutPageViewModel>(
+            vm=> Process.Start("https://metronomesharp.codeplex.com"), 
+            vm=>true);
+
+        #endregion
     }
 }

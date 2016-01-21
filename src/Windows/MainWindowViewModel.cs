@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using Metronome.Annotations;
 using Metronome.Commands;
+using Metronome.Pages;
 using Metronome.Pictures;
 
 namespace Metronome.Windows
@@ -14,7 +15,7 @@ namespace Metronome.Windows
         private readonly bool _initialized;
         public MainWindowViewModel()
         {
-            Controller = new Controller();
+            Controller = Controller.Instance;
 
             TickSoundFiles = Controller.Model.TickSoundFiles;
             SelectedTickSoundFile = Controller.Model.SelectedTickSoundFile;
@@ -23,6 +24,7 @@ namespace Metronome.Windows
             DelayMseconds = Controller.Model.DelayMseconds;
             Volume = Controller.Model.Volume;
             LatencyMiliseconds = Controller.Model.LatencyMseconds;
+            PageUri = PagesHelper.GetAboutPageUri();
 
             StartMetronomeButtonImageUri = PicturesHelper.GetStart();
 
@@ -219,7 +221,7 @@ namespace Metronome.Windows
         #region Start Metronome Button Text
 
         public static readonly DependencyProperty StartMetronomeButtonImageUriProperty = DependencyProperty.Register(
-            "StartMetronomeButtonStartMetronomeButtonImageUriProperty", typeof (string), typeof (MainWindowViewModel));
+            "StartMetronomeButtonStartMetronomeButtonImageUri", typeof (string), typeof (MainWindowViewModel));
 
         public string StartMetronomeButtonImageUri
         {
@@ -232,16 +234,32 @@ namespace Metronome.Windows
         }
 
         #endregion
-        
+
+        #region Page Navigation
+
+        public static readonly DependencyProperty PageUriProperty = DependencyProperty.Register(
+            "PageUri", typeof(string), typeof(MainWindowViewModel));
+
+        public string PageUri
+        {
+            get { return (string)GetValue(PageUriProperty); }
+            set
+            {
+                SetValue(PageUriProperty, value);
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region Commands
 
         public ICommand CheckSettingsChangeCommand { get; } = new CheckSettingsChangeActionCommand();
         public ICommand RefreshMultimediaDevicesCommand { get; } = new RefreshMultimediaDevicesActionCommand();
         public IStoppableInfiniteCommand ExecuteMetronomeAsyncCommand { get; } = new ExecuteMetronomeAsyncCommand();
         public ICommand CloseApplicationCommand { get; } = new CloseApplicationCommand();
-        public ICommand ShowAboutWindowCommand { get; } = new ShowAboutWindowCommand();
-        public ICommand GoToProjectWebsiteCommand { get; } = new GoToProjectWebsiteCommand();
-
+        public ICommand NavigateToAboutPageCommand { get; } = new NavigateToAboutPageCommand();
+        
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;

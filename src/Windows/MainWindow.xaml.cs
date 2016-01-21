@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
+using Metronome.Pages;
 using Metronome.Windows;
 
 namespace Metronome.Windows

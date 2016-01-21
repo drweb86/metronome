@@ -10,9 +10,11 @@ namespace Metronome
 {
     class Controller
     {
+        public static Controller Instance { get; } = new Controller();
+
         public Model Model { get; }
 
-        public Controller()
+        private Controller()
         {
             Model = new Model();
 

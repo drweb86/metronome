@@ -76,18 +76,21 @@
     </ApplicationDefinition>
     <Compile Include="Collections\CircleCollection.cs" />
     <Compile Include="Commands\CloseApplicationCommand.cs" />
-    <Compile Include="Commands\ShowAboutWindowCommand.cs" />
-    <Compile Include="Commands\GoToProjectWebsiteCommand.cs" />
+    <Compile Include="Commands\NavigateToAboutPageCommand.cs" />
     <Compile Include="Converters\PercentsConverter.cs" />
     <Compile Include="Converters\TicksFileNameStripperConverter.cs" />
     <Compile Include="Directories.cs" />
+    <Compile Include="Pages\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PagesHelper.cs" />
     <Compile Include="Pictures\PicturesHelper.cs" />
     <Compile Include="Services\Copyright.cs" />
     <Compile Include="Services\CopyrightService.cs" />
     <Compile Include="Services\MetronomeService.cs" />
     <Compile Include="Services\MetronomeSettings.cs" />
     <Compile Include="Services\MetronomeSettingsService.cs" />
-    <Page Include="Windows\AboutWindow.xaml">
+    <Page Include="Pages\AboutPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -108,10 +111,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Converters\DoubleToIntConverter.cs" />
     <Compile Include="FileReaderFactory.cs" />
-    <Compile Include="Windows\AboutWindow.xaml.cs">
-      <DependentUpon>AboutWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\AboutWindowViewModel.cs" />
+    <Compile Include="Pages\AboutPageViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -160,6 +160,9 @@
     <None Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\1453405468_information.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

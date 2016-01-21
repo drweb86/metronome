@@ -1,13 +1,13 @@
-﻿using System.Diagnostics;
+﻿using Metronome.Pages;
 using Metronome.Windows;
 
 namespace Metronome.Commands
 {
-    class GoToProjectWebsiteCommand : ViewModelCommand<MainWindowViewModel>
+    class NavigateToAboutPageCommand : ViewModelCommand<MainWindowViewModel>
     {
         protected override void OnExecute(MainWindowViewModel model)
         {
-            Process.Start("https://metronomesharp.codeplex.com");
+            model.PageUri = PagesHelper.GetAboutPageUri();
         }
 
         protected override bool OnCanExecute(MainWindowViewModel model)
