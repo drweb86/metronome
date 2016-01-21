@@ -2,29 +2,9 @@
 {
     static class PagesHelper
     {
-        public static string GetAboutPageUri()
-        {
-            return GetPageUri("AboutPage.xaml");
-        }
-
-        public static string GetAudioDevicePageUri()
-        {
-            return GetPageUri("AudioDevicePage.xaml");
-        }
-
-        public static string GetPageUri(string pageName)
-        {
-            return $"pack://application:,,,../Pages/{pageName}";
-        }
-
-        public static string GetAudioFilesPageUri()
-        {
-            return GetPageUri("AudioFilesPage.xaml");
-        }
-
-        public static string GetMainPageUri()
-        {
-            return GetPageUri("MainPage.xaml");
-        }
+        public const string MainPageUri = "pack://application:,,,../Pages/MainPage.xaml";
+        public const string AboutPageUri = "pack://application:,,,../Pages/AboutPage.xaml";
+        public const string AudioDevicePageUri = "pack://application:,,,../Pages/AudioDevicePage.xaml";
+        public const string AudioFilesPageUri = "pack://application:,,,../Pages/AudioFilesPage.xaml";
     }
 }

@@ -10,6 +10,7 @@ namespace Metronome
     {
         public static Controller Instance { get; } = new Controller();
 
+        public MetronomeService MetronomeService { get; } = new MetronomeService();
         public Model Model { get; }
 
         private Controller()
@@ -87,13 +88,13 @@ namespace Metronome
 
         public void ProduceMetronomeSounds(Func<bool> cancel)
         {
-            new MetronomeService()
+            MetronomeService
                 .Run(cancel, Model.ToSettings);
         }
 
         public void TestSound()
         {
-            new MetronomeService()
+            MetronomeService
                 .Test(Model.ToSettings());
         }
 

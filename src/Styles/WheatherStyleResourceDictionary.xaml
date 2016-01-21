@@ -1,0 +1,68 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Metronome.Styles">
+    <Color x:Key="LeftBorder.BackgroundColor">#FF2b2b2b</Color>
+    <SolidColorBrush x:Key="LeftBorder.BackgroundBrush" Color="{StaticResource LeftBorder.BackgroundColor}" />
+
+    <Color x:Key="LeftBorder.MainMenuButton.BackgroundColor">#FF0063b1</Color>
+    <SolidColorBrush x:Key="LeftBorder.MainMenuButton.BackgroundBrush" Color="{StaticResource LeftBorder.MainMenuButton.BackgroundColor}" />
+
+    <Color x:Key="LeftBorder.MainMenuButton.Selected.BackgroundColor">#FF15476e</Color>
+    <SolidColorBrush x:Key="LeftBorder.MainMenuButton.Selected.BackgroundBrush" Color="{StaticResource LeftBorder.MainMenuButton.Selected.BackgroundColor}" />
+
+    <Color x:Key="LeftBorder.MainMenuButton.MouseOver.BackgroundColor">#FF404040</Color>
+    <SolidColorBrush x:Key="LeftBorder.MainMenuButton.MouseOver.BackgroundBrush" Color="{StaticResource LeftBorder.MainMenuButton.MouseOver.BackgroundColor}" />
+
+    <Color x:Key="LeftBorder.Spacer.BackgroundColor">#FF555555</Color>
+    <SolidColorBrush x:Key="LeftBorder.Spacer.BackgroundBrush" Color="{StaticResource LeftBorder.Spacer.BackgroundColor}" />
+
+
+
+    <!-- Styles -->
+    <Style x:Key="LeftBorder.MainMenuButton.ImageStyle" TargetType="Image">
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+    </Style>
+
+    <local:LeftBorderIsSelectedButtonConverter x:Key="LeftBorderIsSelectedButtonConverter" />
+    <Style x:Key="LeftBorder.MainMenuButton.Style" TargetType="Button">
+        <Setter Property="Width" Value="48" />
+        <Setter Property="Height" Value="48" />
+        <Setter Property="DockPanel.Dock" Value="Top" />
+        <Setter Property="Background" Value="{StaticResource LeftBorder.BackgroundBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource LeftBorder.MainMenuButton.MouseOver.BackgroundBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource LeftBorder.MainMenuButton.MouseOver.BackgroundBrush}"/>
+            </Trigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Value="True">
+                        <Condition.Binding>
+                            <MultiBinding Converter="{StaticResource LeftBorderIsSelectedButtonConverter}">
+                                <Binding Path="PageUri"/>
+                                <Binding RelativeSource="{RelativeSource Self}" Path="Tag" />
+                            </MultiBinding>
+                        </Condition.Binding>
+                    </Condition>
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.Setters>
+                    <Setter Property="Button.Background" Value="{StaticResource LeftBorder.MainMenuButton.Selected.BackgroundBrush}"/>
+                </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

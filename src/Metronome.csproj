@@ -116,6 +116,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\WheatherStyleResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -133,6 +137,7 @@
     <Compile Include="Converters\DoubleToIntConverter.cs" />
     <Compile Include="FileReaderFactory.cs" />
     <Compile Include="Pages\AboutPageViewModel.cs" />
+    <Compile Include="Styles\LeftBorderIsSelectedButtonConverter.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -183,10 +188,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\1453405468_information.png" />
+    <Resource Include="Pictures\MainMenu.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\1453413561_PixelKit_home_icon.png" />
+    <Resource Include="Pictures\Home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\1453073032_speaker%28Inverted%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\1453422161_Streamline-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\1453073705_music-note-sound%28Inverted%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\1453422794_speaker.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

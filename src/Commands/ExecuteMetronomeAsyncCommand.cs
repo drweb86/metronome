@@ -4,15 +4,18 @@ using Metronome.Pictures;
 
 namespace Metronome.Commands
 {
-    //TODO: do not use background worker.
+    //TODO: do not use background worker. switch to thread or task.
     class ExecuteMetronomeAsyncCommand: ViewModelCommand<MainPageViewModel>, IStoppableInfiniteCommand
     {
+        public bool IsRunning => _backgroundWorker != null && _backgroundWorker.IsBusy;
+
         public void Stop()
         {
             _backgroundWorker.CancelAsync();
         }
 
-        private readonly BackgroundWorker _backgroundWorker = new BackgroundWorker();
+        //static because MainPageViewModel can be destroyed several times upon progress.
+        private static readonly BackgroundWorker _backgroundWorker = new BackgroundWorker();
         public ExecuteMetronomeAsyncCommand()
         {
             _backgroundWorker.WorkerSupportsCancellation = true;
@@ -23,15 +26,15 @@ namespace Metronome.Commands
 
         protected override void OnExecute(MainPageViewModel model)
         {
+            _cachedViewModel.StartMetronomeButtonImageUri = PicturesHelper.GetStop();
+
             if (_backgroundWorker.IsBusy)
             {
                 _backgroundWorker.CancelAsync();
-                _cachedViewModel.StartMetronomeButtonImageUri = PicturesHelper.GetStop();
                 _cachedViewModel.StartMetronomeButtonEnabled = false;
             }
             else
             {
-                _cachedViewModel.StartMetronomeButtonImageUri = PicturesHelper.GetStop();
                 _backgroundWorker.RunWorkerAsync();
             }
         }

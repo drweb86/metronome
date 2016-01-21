@@ -11,12 +11,13 @@ namespace Metronome.Services
 {
     class MetronomeService
     {
-        private static bool _isRunning; // we should not run neither produce test sounds while metronome is active.
+        public bool IsRunning { get; set; }// we should not run neither produce test sounds while metronome is active.
+
         public void Run(Func<bool> cancel, Func<MetronomeSettings> getSettings)
         {
             try
             {
-                _isRunning = true;
+                IsRunning = true;
                 do
                 {
                     var settings = getSettings(); // support for changing on the fly.
@@ -45,7 +46,7 @@ namespace Metronome.Services
             }
             finally
             {
-                _isRunning = false;
+                IsRunning = false;
             }
         }
 
@@ -102,7 +103,7 @@ namespace Metronome.Services
 
         public void Test(MetronomeSettings settings)
         {
-            if (_isRunning)
+            if (IsRunning)
                 return;
 
             var device = GetDevice(settings);

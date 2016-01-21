@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Metronome.Annotations;
@@ -18,7 +17,7 @@ namespace Metronome.Windows
             {
                 Controller = Controller.Instance;
 
-                PageUri = PagesHelper.GetMainPageUri();
+                PageUri = PagesHelper.MainPageUri;
             }
             finally
             {
@@ -50,13 +49,13 @@ namespace Metronome.Windows
         public ICommand CloseApplicationCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
             vm => vm.Controller.SaveSettings());
         public ICommand NavigateToAboutPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
-            vm => vm.PageUri = PagesHelper.GetAboutPageUri());
+            vm => vm.PageUri = PagesHelper.AboutPageUri);
         public ICommand NavigateToAudioDevicePageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
-            vm => vm.PageUri = PagesHelper.GetAudioDevicePageUri());
+            vm => vm.PageUri = PagesHelper.AudioDevicePageUri);
         public ICommand NavigateToAudioFilesPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
-            vm => vm.PageUri = PagesHelper.GetAudioFilesPageUri());
+            vm => vm.PageUri = PagesHelper.AudioFilesPageUri);
         public ICommand NavigateToMainPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
-            vm => vm.PageUri = PagesHelper.GetMainPageUri());
+            vm => vm.PageUri = PagesHelper.MainPageUri);
 
         #endregion
 

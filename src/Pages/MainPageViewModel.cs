@@ -20,7 +20,9 @@ namespace Metronome.Pages
 
                 DelayMseconds = Controller.Model.DelayMseconds;
                 Volume = Controller.Model.Volume;
-                StartMetronomeButtonImageUri = PicturesHelper.GetStart();
+                StartMetronomeButtonImageUri = ExecuteMetronomeAsyncCommand.IsRunning ?
+                    PicturesHelper.GetStop() :
+                    PicturesHelper.GetStart();
             }
             finally
             {
@@ -29,8 +31,7 @@ namespace Metronome.Pages
         }
 
         internal Controller Controller { get; }
-
-
+        
         #region Volume
 
         public static readonly DependencyProperty VolumeProperty = DependencyProperty.Register(
