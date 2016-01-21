@@ -71,6 +71,8 @@
             <Separator HorizontalAlignment="Stretch" 
                        DockPanel.Dock="Bottom" 
                        VerticalAlignment="Bottom"
+                       BorderThickness="0"
+                       Margin="0 0 0 -1"
                        Background="{StaticResource LeftBorder.Spacer.BackgroundBrush}"/>
         </DockPanel>
         
