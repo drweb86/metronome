@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:localConverters="clr-namespace:Metronome.Converters"
         xmlns:windows="clr-namespace:Metronome.Windows"
         mc:Ignorable="d"
         Title="Metronome#" Height="500" Width="700" MinHeight="500" Closed="OnClosed"
@@ -12,18 +11,22 @@
     <Window.DataContext>
         <windows:MainWindowViewModel />
     </Window.DataContext>
-    <Window.Resources>
-        <localConverters:DoubleToIntConverter x:Key="DoubleToIntConverter" />
-        <localConverters:PercentsConverter x:Key="PercentsConverter" />
-    </Window.Resources>
     <StackPanel Orientation="Horizontal">
         <StackPanel>
+            <Button Width="45" Height="45"
+                CommandParameter="{Binding}"  
+                Command="{Binding NavigateToMainPageCommand}">
+                <Image Width="24" Height="24" 
+                    Source="../Pictures/1453413561_PixelKit_home_icon.png" 
+                    ToolTip="Returns to home page"/>
+            </Button>
+            
             <Button Width="45" Height="45"
                 CommandParameter="{Binding}"  
                 Command="{Binding NavigateToAudioFilesPageCommand}">
                 <Image Width="24" Height="24" 
                     Source="../Pictures/1453073705_music-note-sound.png" 
-                    ToolTip="Select Audio File..."/>
+                    ToolTip="Selects audio file"/>
             </Button>
             
             <Button Width="45" Height="45"
@@ -31,74 +34,21 @@
                 Command="{Binding NavigateToAudioDevicePageCommand}">
                 <Image Width="24" Height="24" 
                     Source="../Pictures/1453073032_speaker.png" 
-                    ToolTip="Select Audio Device..."/>
+                    ToolTip="Selects audio device"/>
             </Button>
                 
-            <Button Width="45" Height="45"
+            <Button VerticalAlignment="Bottom" 
+                Width="45" Height="45"
                 CommandParameter="{Binding}"  
                 Command="{Binding NavigateToAboutPageCommand}">
                 <Image Width="24" Height="24" 
                     Source="../Pictures/1453405468_information.png" 
-                    ToolTip="About Metronome#"/>
+                    ToolTip="Shows about page"/>
             </Button>
-            <Button>2</Button>
-            <Button>3</Button>
         </StackPanel>
-
-        <Frame 
-            Margin="20 5 20 5"
-            Source="{Binding PageUri}" 
-            NavigationUIVisibility="Hidden" />
-            
-            <StackPanel>
-                    <Button Margin="50 50 50 50"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Center"
-                            Width="120"
-                            Height="120"
-                            CommandParameter="{Binding}"
-                            Command="{Binding ExecuteMetronomeAsyncCommand}" 
-                            IsEnabled="{Binding StartMetronomeButtonEnabled}">
-                            <Image Source="{Binding StartMetronomeButtonImageUri}" ToolTip="Start/Stop metronome"/>
-                            <Button.Template>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Grid>
-                                        <Ellipse />
-                                        <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Button.Template>
-                    </Button>
-                    <Expander Header="Volume, delay...">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Image VerticalAlignment="Center"
-                                   Grid.Row="0" Grid.Column="0" 
-                                   Width="32" Height="32" 
-                                   Source="../Pictures/1452998965_volume-70px.png" 
-                                   ToolTip="Volume (%)"/>
-                            <Slider VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Value="{Binding Volume}" Minimum="0.01" Maximum="1" />
-                            <Label Grid.Row="0" Grid.Column="2"  Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" />
-                        
-                            <Image VerticalAlignment="Center"
-                                   Grid.Row="1" Grid.Column="0" 
-                                   Width="32" Height="32" 
-                                   Source="../Pictures/1452999134_Personal_trainer_1.png" 
-                                   ToolTip="Delay (milliseconds)"/>
-                            <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"  Value="{Binding DelayMseconds}" Minimum="1" Maximum="4000" />
-                            <Label Grid.Row="1" Grid.Column="2"  Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
-                        </Grid>
-                    </Expander>
+            <Frame 
+                Margin="20 5 20 5"
+                Source="{Binding PageUri}" 
+                NavigationUIVisibility="Hidden" />
         </StackPanel>
-        </StackPanel>
-        
 </Window>

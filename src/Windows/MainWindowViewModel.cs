@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -7,7 +6,6 @@ using System.Windows.Input;
 using Metronome.Annotations;
 using Metronome.Commands;
 using Metronome.Pages;
-using Metronome.Pictures;
 
 namespace Metronome.Windows
 {
@@ -20,11 +18,7 @@ namespace Metronome.Windows
             {
                 Controller = Controller.Instance;
 
-                DelayMseconds = Controller.Model.DelayMseconds;
-                Volume = Controller.Model.Volume;
-                PageUri = PagesHelper.GetAboutPageUri();
-
-                StartMetronomeButtonImageUri = PicturesHelper.GetStart();
+                PageUri = PagesHelper.GetMainPageUri();
             }
             finally
             {
@@ -33,88 +27,6 @@ namespace Metronome.Windows
         }
 
         internal Controller Controller { get; }
-
-        #region Volume
-
-        public static readonly DependencyProperty VolumeProperty = DependencyProperty.Register(
-            "Volume", typeof(double), typeof(MainWindowViewModel),
-            new FrameworkPropertyMetadata(default(double), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnChangeVolume));
-
-        private static void OnChangeVolume(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = ((MainWindowViewModel)d);
-            viewModel.Controller.ChangeVolume((float)(double)e.NewValue);
-        }
-
-        public double Volume
-        {
-            get { return (double)GetValue(VolumeProperty); }
-            set
-            {
-                SetValue(VolumeProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Delay Mseconds
-
-        public static readonly DependencyProperty DelayMsecondsProperty = DependencyProperty.Register(
-            "DelayMseconds", typeof (double), typeof (MainWindowViewModel),
-            new FrameworkPropertyMetadata(default(double), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnChangeDelayMseconds));
-
-        private static void OnChangeDelayMseconds(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = ((MainWindowViewModel)d);
-            viewModel.Controller.ChangeDelay((int)(double)e.NewValue);
-        }
-
-        public double DelayMseconds
-        {
-            get { return (double) GetValue(DelayMsecondsProperty); }
-            set
-            {
-                SetValue(DelayMsecondsProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Start Metronome Button Enabled
-
-        public static readonly DependencyProperty StartMetronomeButtonEnabledProperty = DependencyProperty.Register(
-            "StartMetronomeButtonEnabled", typeof(bool), typeof(MainWindowViewModel), new PropertyMetadata(true));
-
-        public bool StartMetronomeButtonEnabled
-        {
-            get { return (bool)GetValue(StartMetronomeButtonEnabledProperty); }
-            set
-            {
-                SetValue(StartMetronomeButtonEnabledProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Start Metronome Button Text
-
-        public static readonly DependencyProperty StartMetronomeButtonImageUriProperty = DependencyProperty.Register(
-            "StartMetronomeButtonStartMetronomeButtonImageUri", typeof (string), typeof (MainWindowViewModel));
-
-        public string StartMetronomeButtonImageUri
-        {
-            get { return (string) GetValue(StartMetronomeButtonImageUriProperty); }
-            set
-            {
-                SetValue(StartMetronomeButtonImageUriProperty, value);
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
 
         #region Page Navigation
 
@@ -135,16 +47,16 @@ namespace Metronome.Windows
 
         #region Commands
 
-        public ICommand CheckSettingsChangeCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
-            vm => Task.Run(() => vm.Controller.TestSound()));
-        public IStoppableInfiniteCommand ExecuteMetronomeAsyncCommand { get; } = new ExecuteMetronomeAsyncCommand();
-        public ICommand CloseApplicationCommand { get; } = new CloseApplicationCommand();
+        public ICommand CloseApplicationCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
+            vm => vm.Controller.SaveSettings());
         public ICommand NavigateToAboutPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
             vm => vm.PageUri = PagesHelper.GetAboutPageUri());
         public ICommand NavigateToAudioDevicePageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
             vm => vm.PageUri = PagesHelper.GetAudioDevicePageUri());
         public ICommand NavigateToAudioFilesPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
             vm => vm.PageUri = PagesHelper.GetAudioFilesPageUri());
+        public ICommand NavigateToMainPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
+            vm => vm.PageUri = PagesHelper.GetMainPageUri());
 
         #endregion
 

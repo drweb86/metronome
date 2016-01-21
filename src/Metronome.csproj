@@ -75,7 +75,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Collections\CircleCollection.cs" />
-    <Compile Include="Commands\CloseApplicationCommand.cs" />
     <Compile Include="Converters\PercentsConverter.cs" />
     <Compile Include="Converters\TicksFileNameStripperConverter.cs" />
     <Compile Include="Directories.cs" />
@@ -90,6 +89,10 @@
       <DependentUpon>AudioFilesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AudioFilesPageViewModel.cs" />
+    <Compile Include="Pages\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MainPageViewModel.cs" />
     <Compile Include="Pages\PagesHelper.cs" />
     <Compile Include="Pictures\PicturesHelper.cs" />
     <Compile Include="Services\Copyright.cs" />
@@ -106,6 +109,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\AudioFilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -177,6 +184,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pictures\1453405468_information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\1453413561_PixelKit_home_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

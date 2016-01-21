@@ -21,5 +21,10 @@
         {
             return GetPageUri("AudioFilesPage.xaml");
         }
+
+        public static string GetMainPageUri()
+        {
+            return GetPageUri("MainPage.xaml");
+        }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
+using Metronome.Pages;
 using Metronome.Pictures;
-using Metronome.Windows;
 
 namespace Metronome.Commands
 {
     //TODO: do not use background worker.
-    class ExecuteMetronomeAsyncCommand: ViewModelCommand<MainWindowViewModel>, IStoppableInfiniteCommand
+    class ExecuteMetronomeAsyncCommand: ViewModelCommand<MainPageViewModel>, IStoppableInfiniteCommand
     {
         public void Stop()
         {
@@ -21,7 +21,7 @@ namespace Metronome.Commands
 
         }
 
-        protected override void OnExecute(MainWindowViewModel model)
+        protected override void OnExecute(MainPageViewModel model)
         {
             if (_backgroundWorker.IsBusy)
             {
@@ -36,8 +36,8 @@ namespace Metronome.Commands
             }
         }
 
-        private MainWindowViewModel _cachedViewModel;
-        protected override bool OnCanExecute(MainWindowViewModel viewModel)
+        private MainPageViewModel _cachedViewModel;
+        protected override bool OnCanExecute(MainPageViewModel viewModel)
         {
             if (_backgroundWorker.CancellationPending)
                 return false;
