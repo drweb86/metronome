@@ -6,7 +6,7 @@
         xmlns:localConverters="clr-namespace:Metronome.Converters"
         xmlns:windows="clr-namespace:Metronome.Windows"
         mc:Ignorable="d"
-        Title="Metronome#" Height="500" Width="700" Closed="OnClosed"
+        Title="Metronome#" Height="500" Width="700" MinHeight="500" Closed="OnClosed"
         WindowStartupLocation="CenterScreen"
         Icon="../Pictures/1453069499_Metronome.ico">
     <Window.DataContext>
@@ -19,8 +19,8 @@
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="_About" 
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About Metronome#" 
                         CommandParameter="{Binding}"  
                         Command="{Binding ShowAboutWindowCommand}"/>
                 <MenuItem Header="_Web-site / Submit your sound"
@@ -28,14 +28,10 @@
                         Command="{Binding GoToProjectWebsiteCommand}"/>
             </MenuItem>
         </Menu>
-        <TabControl>
-            <TabItem Header="Metronome">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" VerticalAlignment="Top"
+                <StackPanel>
+                    <Button Margin="50 50 50 50"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Center"
                             Width="120"
                             Height="120"
                             CommandParameter="{Binding}"
@@ -51,92 +47,89 @@
                                 </ControlTemplate>
                             </Button.Template>
                     </Button>
-                    <Grid Grid.Column="1" Margin="20 0 0 0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                    <Expander Header="Volume, delay and latency...">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <Image VerticalAlignment="Center"
-                               Grid.Row="0" Grid.Column="0" 
-                               Width="32" Height="32" 
-                               Source="../Pictures/1452998965_volume-70px.png" 
-                               ToolTip="Volume (%)"/>
-                        <Slider VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Value="{Binding Volume}" Minimum="0.01" Maximum="1" />
-                        <Label Grid.Row="0" Grid.Column="2"  Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" />
+                            <Image VerticalAlignment="Center"
+                                   Grid.Row="0" Grid.Column="0" 
+                                   Width="32" Height="32" 
+                                   Source="../Pictures/1452998965_volume-70px.png" 
+                                   ToolTip="Volume (%)"/>
+                            <Slider VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Value="{Binding Volume}" Minimum="0.01" Maximum="1" />
+                            <Label Grid.Row="0" Grid.Column="2"  Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" />
                         
-                        <Image VerticalAlignment="Center"
-                               Grid.Row="1" Grid.Column="0" 
-                               Width="32" Height="32" 
-                               Source="../Pictures/1452999134_Personal_trainer_1.png" 
-                               ToolTip="Delay (milliseconds)"/>
-                        <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"  Value="{Binding DelayMseconds}" Minimum="1" Maximum="4000" />
-                        <Label Grid.Row="1" Grid.Column="2"  Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
+                            <Image VerticalAlignment="Center"
+                                   Grid.Row="1" Grid.Column="0" 
+                                   Width="32" Height="32" 
+                                   Source="../Pictures/1452999134_Personal_trainer_1.png" 
+                                   ToolTip="Delay (milliseconds)"/>
+                            <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"  Value="{Binding DelayMseconds}" Minimum="1" Maximum="4000" />
+                            <Label Grid.Row="1" Grid.Column="2"  Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
 
-                        <Image VerticalAlignment="Center"
-                               Grid.Row="2" Grid.Column="0" 
-                               Width="32" Height="32" 
-                               Source="../Pictures/1453071663_performance-clock-speed.png" 
-                               ToolTip="Latency (milliseconds, the less the better. Supported values by Windows 10 are 45-100)"/>
-                        <Slider VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"  Value="{Binding LatencyMiliseconds}" Minimum="20" Maximum="100" />
-                        <Label Grid.Row="2" Grid.Column="2"  Content="{Binding LatencyMiliseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
-                    </Grid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Output Device / Sound">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0">Please, select output device:</Label>
-                    <ListBox Grid.Row="1"
-                             ItemsSource="{Binding MultimediaDevicesFriendlyNames}"
-                             SelectedItem="{Binding SelectedMultimediaDeviceFriendlyName}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073032_speaker.png" />
-                                    <Label Grid.Column="1" Content="{Binding}" VerticalAlignment="Center" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <Button Grid.Row="2"
-                            CommandParameter="{Binding}"
-                            Command="{Binding RefreshMultimediaDevicesCommand}">Refresh output devices</Button>
-                    <Label Grid.Row="3">Please, select sound:</Label>
-                    <ListBox Grid.Row="4" 
-                             ItemsSource="{Binding TickSoundFiles}"
-                             SelectedItem="{Binding SelectedTickSoundFile, Mode=TwoWay}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073705_music-note-sound.png" />
-                                    <Label Grid.Column="1" Content="{Binding Converter={StaticResource TicksFileNameStripperConverter}}" VerticalAlignment="Center" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                            <Image VerticalAlignment="Center"
+                                   Grid.Row="2" Grid.Column="0" 
+                                   Width="32" Height="32" 
+                                   Source="../Pictures/1453071663_performance-clock-speed.png" 
+                                   ToolTip="Latency (milliseconds, the less the better. Supported values by Windows 10 are 45-100)"/>
+                            <Slider VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"  Value="{Binding LatencyMiliseconds}" Minimum="20" Maximum="100" />
+                            <Label Grid.Row="2" Grid.Column="2"  Content="{Binding LatencyMiliseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
+                        </Grid>
+                    </Expander>
+                    <Expander Header="Audio file...">
+                        <StackPanel>
+                        <Label>Please, select sound:</Label>
+                        <ListBox  MaxHeight="100"
+                                     ItemsSource="{Binding TickSoundFiles}"
+                                     SelectedItem="{Binding SelectedTickSoundFile, Mode=TwoWay}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073705_music-note-sound.png" />
+                                                <Label Grid.Column="1" Content="{Binding Converter={StaticResource TicksFileNameStripperConverter}}" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="Output audio device...">
+                        <StackPanel>
+                            <Label>Please, select output device:</Label>
+                                <ListBox MaxHeight="100"
+                                     ItemsSource="{Binding MultimediaDevicesFriendlyNames}"
+                                     SelectedItem="{Binding SelectedMultimediaDeviceFriendlyName}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073032_speaker.png" />
+                                            <Label Grid.Column="1" Content="{Binding}" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Button
+                                    CommandParameter="{Binding}"
+                                    Command="{Binding RefreshMultimediaDevicesCommand}">Refresh output devices</Button>
+                        </StackPanel>
+                    </Expander>
+        </StackPanel>
     </DockPanel>
 </Window>
