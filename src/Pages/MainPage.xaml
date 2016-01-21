@@ -7,7 +7,8 @@
       xmlns:converters="clr-namespace:Metronome.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="Metronome">
+      Title="Metronome"
+      >
     <Page.DataContext>
         <local:MainPageViewModel />
     </Page.DataContext>
@@ -15,9 +16,15 @@
         <ResourceDictionary>
             <converters:DoubleToIntConverter x:Key="DoubleToIntConverter" />
             <converters:PercentsConverter x:Key="PercentsConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/WheatherStyleResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-        <StackPanel>
+    <Page.Background>
+        <ImageBrush ImageSource="{StaticResource Page.MainPage.BackgroundImage}" Stretch="UniformToFill"/>
+    </Page.Background>
+    <StackPanel Margin="20 5 20 5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

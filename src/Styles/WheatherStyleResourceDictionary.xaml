@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Metronome.Styles">
+                    xmlns:local="clr-namespace:Metronome.Styles"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:pages="clr-namespace:Metronome.Pages">
     <Color x:Key="LeftBorder.BackgroundColor">#FF2b2b2b</Color>
     <SolidColorBrush x:Key="LeftBorder.BackgroundBrush" Color="{StaticResource LeftBorder.BackgroundColor}" />
 
@@ -16,9 +18,41 @@
     <Color x:Key="LeftBorder.Spacer.BackgroundColor">#FF555555</Color>
     <SolidColorBrush x:Key="LeftBorder.Spacer.BackgroundBrush" Color="{StaticResource LeftBorder.Spacer.BackgroundColor}" />
 
+    <Color x:Key="Page.Header.MainPage.BackgroundColor">#FF171f33</Color>
+    <SolidColorBrush x:Key="Page.Header.MainPage.BackgroundBrush" Color="{StaticResource Page.Header.MainPage.BackgroundColor}" />
+
+    <Color x:Key="Page.Header.OrdinaryText.Color">Black</Color>
+    <SolidColorBrush x:Key="Page.Header.OrdinaryText.Brush" Color="{StaticResource Page.Header.OrdinaryText.Color}" />
+
+    <Color x:Key="Page.Header.MainText.Color">White</Color>
+    <SolidColorBrush x:Key="Page.Header.MainText.Brush" Color="{StaticResource Page.Header.MainText.Color}" />
+    
+    <Color x:Key="Page.Header.OrdinaryPage.BackgroundColor">#fff2f2f2</Color>
+    <SolidColorBrush x:Key="Page.Header.OrdinaryPage.BackgroundBrush" Color="{StaticResource Page.Header.OrdinaryPage.BackgroundColor}" />
 
 
+    <BitmapImage x:Key="Page.MainPage.BackgroundImage">../Pictures/music-1425878.jpg</BitmapImage>
+    
     <!-- Styles -->
+
+    <Style x:Key="Page.Header.PanelStyle" TargetType="StackPanel">
+        <Setter Property="Background" Value="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding PageUri}" Value="{x:Static pages:PagesHelper.MainPageUri}">
+                <Setter Property="StackPanel.Background" Value="{StaticResource Page.Header.MainPage.BackgroundBrush}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Page.Header.LabelStyle" TargetType="Label">
+        <Setter Property="Foreground" Value="{StaticResource Page.Header.OrdinaryText.Brush}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding PageUri}" Value="{x:Static pages:PagesHelper.MainPageUri}">
+                <Setter Property="Label.Foreground" Value="{StaticResource Page.Header.MainText.Brush}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="LeftBorder.MainMenuButton.ImageStyle" TargetType="Image">
         <Setter Property="Width" Value="24" />
         <Setter Property="Height" Value="24" />

@@ -10,13 +10,16 @@
       Title="Select Audio Device">
     <Page.Resources>
         <ResourceDictionary><!--Adding resource without dictionary is not working for pages. seems wpf bug.-->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/WheatherStyleResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
             <converters:DoubleToIntConverter x:Key="DoubleToIntConverter" />
         </ResourceDictionary>
     </Page.Resources>
     <Page.DataContext>
         <local:AudioDevicePageViewModel />
     </Page.DataContext>
-    <Grid>
+    <Grid Background="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}">
         <StackPanel>
             <Button
                 Padding="10 5 10 5"

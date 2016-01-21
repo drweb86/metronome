@@ -19,8 +19,8 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <StackPanel Orientation="Horizontal">
-        <DockPanel Background="{StaticResource LeftBorder.BackgroundBrush}">
+    <DockPanel LastChildFill="True">
+        <DockPanel DockPanel.Dock="Left" Background="{StaticResource LeftBorder.BackgroundBrush}">
             <Button Style="{StaticResource LeftBorder.MainMenuButton.Style}"
                 CommandParameter="{Binding}"  
                 Command="{Binding NavigateToMainPageCommand}"
@@ -75,10 +75,14 @@
                        Margin="0 0 0 -1"
                        Background="{StaticResource LeftBorder.Spacer.BackgroundBrush}"/>
         </DockPanel>
-        
-        <Frame 
-            Margin="20 5 20 5"
+        <StackPanel DockPanel.Dock="Top"
+            Style="{StaticResource Page.Header.PanelStyle}">
+            <Label Content="{Binding ElementName=_frame, Path=Content.Title}" 
+                Style="{StaticResource Page.Header.LabelStyle}" 
+                FontSize="15" Margin="50 9 0 9" FontWeight="Bold"/>
+        </StackPanel>
+        <Frame x:Name="_frame"
             Source="{Binding PageUri}" 
             NavigationUIVisibility="Hidden" />
-    </StackPanel>
+    </DockPanel>
 </Window>

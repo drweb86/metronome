@@ -13,10 +13,13 @@
     </Page.DataContext>
     <Page.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/WheatherStyleResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
             <converters:TicksFileNameStripperConverter x:Key="TicksFileNameStripperConverter" />
         </ResourceDictionary>
     </Page.Resources>
-    <Grid>
+    <Grid Background="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
