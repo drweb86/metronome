@@ -24,51 +24,100 @@
     <Page.Background>
         <ImageBrush ImageSource="{StaticResource Page.MainPage.BackgroundImage}" Stretch="UniformToFill"/>
     </Page.Background>
-    <StackPanel Margin="20 5 20 5">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Image VerticalAlignment="Center"
-                                   Grid.Row="0" Grid.Column="0" 
-                                   Width="32" Height="32" 
-                                   Source="../Pictures/1452998965_volume-70px.png" 
-                                   ToolTip="Volume (%)"/>
-                <Slider VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Value="{Binding Volume}" Minimum="0.01" Maximum="1" />
-                <Label Grid.Row="0" Grid.Column="2"  Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" />
-
-                <Image VerticalAlignment="Center"
-                                   Grid.Row="1" Grid.Column="0" 
-                                   Width="32" Height="32" 
-                                   Source="../Pictures/1452999134_Personal_trainer_1.png" 
-                                   ToolTip="Delay (milliseconds)"/>
-                <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"  Value="{Binding DelayMseconds}" Minimum="1" Maximum="4000" />
-                <Label Grid.Row="1" Grid.Column="2"  Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
-            </Grid>
-            <Button Margin="50 50 50 50"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Center"
-                            Width="120"
-                            Height="120"
-                            CommandParameter="{Binding}"
-                            Command="{Binding ExecuteMetronomeAsyncCommand}" 
-                            IsEnabled="{Binding StartMetronomeButtonEnabled}">
-                <Image Source="{Binding StartMetronomeButtonImageUri}" ToolTip="Start/Stop metronome"/>
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
+    <Grid Margin="20 5 20 5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Button Grid.Column="0"
+                Grid.Row="1"
+                Margin="50 50 50 50"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="120"
+                Height="120"
+                CommandParameter="{Binding}"
+                Command="{Binding ExecuteMetronomeAsyncCommand}" 
+                IsEnabled="{Binding StartMetronomeButtonEnabled}"
+                >
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" BorderThickness="2" 
+                        ToolTip="Start/Stop metronome">
                         <Grid>
                             <Ellipse />
-                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Image 
+                                Opacity="{TemplateBinding Opacity}"
+                                Source="{Binding StartMetronomeButtonImageUri}" 
+                                ToolTip="Start/Stop metronome" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"/>
                         </Grid>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Opacity" Value="0.8" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Opacity" Value="1" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                
+            </Button.Style>
+        </Button>
+
+
+        <Label Grid.Row="0" Grid.Column="1"  
+               Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" 
+               Style="{StaticResource Page.MainPage.Label.Style}" 
+               HorizontalAlignment="Center"
+               ToolTip="Volume (%)"/>
+        <Label Grid.Row="0" Grid.Column="2"  
+               Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}"  
+               Style="{StaticResource Page.MainPage.Label.Style}" 
+               HorizontalAlignment="Center"
+               ToolTip="Delay (milliseconds)"/>
+
+        <Image Grid.Row="2" Grid.Column="1" 
+               HorizontalAlignment="Center"
+                Width="32" Height="32" 
+                Source="../Pictures/1452998965_volume-70px.png" 
+                ToolTip="Volume (%)"/>
+        <Image Grid.Row="2" Grid.Column="2"
+               HorizontalAlignment="Center"
+                Width="32" Height="32" 
+                Source="../Pictures/1452999134_Personal_trainer_1.png" 
+                ToolTip="Delay (milliseconds)"/>
+        
+        <Slider Orientation="Vertical" 
+                HorizontalAlignment="Center" 
+                Grid.Row="1" Grid.Column="1" 
+                Value="{Binding Volume}" 
+                Minimum="0.01" 
+                Maximum="1" 
+                ToolTip="Volume (%)"/>
+        <Slider Orientation="Vertical" 
+                HorizontalAlignment="Center" 
+                Grid.Row="1" Grid.Column="2"  
+                Value="{Binding DelayMseconds}" 
+                Minimum="1" 
+                Maximum="4000" 
+                ToolTip="Delay (milliseconds)"/>
+            
+
+    </Grid>
+            
 </Page>
