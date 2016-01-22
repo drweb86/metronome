@@ -23,15 +23,18 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Button
+            Style="{StaticResource Page.Button.Style}"
             HorizontalAlignment="Left"
-            Margin="0 0 0 20"
-            Padding="10 5 10 5"
+            Margin="36 23 0 0"
             Content="Go to Web-site / Submit your sound"
             CommandParameter="{Binding}"
-            Command="{Binding GoToProjectWebsiteCommand}"/>
+            Command="{Binding GoToProjectWebsiteCommand}" />
 
         <DataGrid  Grid.Row="1" 
-            AutoGenerateColumns="False" ItemsSource="{Binding Copyrights}" IsReadOnly="True">
+            Margin="36 23 36 36"
+            AutoGenerateColumns="False" ItemsSource="{Binding Copyrights}" IsReadOnly="True"
+            FontSize="{StaticResource Page.FontSize}"
+            Foreground="{StaticResource Page.OrdinaryPage.FontForeground}">
             <DataGrid.Columns >
                 <DataGridTextColumn Binding="{Binding Path=Source}" MinWidth="50" Header="Component" />
                 <DataGridTextColumn Binding="{Binding Path=Author}" MinWidth="50" Header="Author" />

@@ -79,7 +79,7 @@
             Style="{StaticResource Page.Header.PanelStyle}">
             <Label Content="{Binding ElementName=_frame, Path=Content.Title}" 
                 Style="{StaticResource Page.Header.LabelStyle}" 
-                FontSize="15" Margin="50 9 0 9" FontWeight="Bold"/>
+                FontSize="{StaticResource Page.FontSize}" Margin="50 9 0 9" FontWeight="Bold"/>
         </StackPanel>
         <Frame x:Name="_frame"
             Source="{Binding PageUri}" 
