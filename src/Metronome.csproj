@@ -174,9 +174,6 @@
     <Resource Include="Pictures\1453069499_Metronome.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\1453071663_performance-clock-speed.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Pictures\1453073032_speaker.png" />
   </ItemGroup>
   <ItemGroup>

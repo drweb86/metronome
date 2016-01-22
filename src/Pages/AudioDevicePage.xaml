@@ -21,16 +21,21 @@
     </Page.DataContext>
     <Grid Background="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}">
         <StackPanel>
-            <Button
-                Padding="10 5 10 5"
-                Margin="0 0 0 20"
+            <Button Style="{StaticResource Page.Button.Style}"
+                Margin="36 23 0 0"
                 HorizontalAlignment="Left"
                 CommandParameter="{Binding}"
                 Command="{Binding RefreshMultimediaDevicesCommand}"
                 ToolTip="Refreshes output devices list">Refresh</Button>
-            
-            <Label>Please, select output device:</Label>
-            <ListBox
+
+            <Label Style="{StaticResource Page.InputPrompt.Label.Style}"
+                   Margin="32 23 0 0"
+                   >Output audio device</Label>
+            <Label Style="{StaticResource Page.InputInformation.Label.Style}"
+                   Margin="32 11 0 0"
+                   >Output audio device will be used to output metronome sounds.</Label>
+            <ListBox Style="{StaticResource Page.ListBox.Style}"
+                Margin="36 11 20 0"
                 ItemsSource="{Binding MultimediaDevicesFriendlyNames}"
                 SelectedItem="{Binding SelectedMultimediaDeviceFriendlyName}">
                 <ListBox.ItemTemplate>
@@ -41,29 +46,33 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073032_speaker.png" />
-                            <Label Grid.Column="1" Content="{Binding}" VerticalAlignment="Center" />
+                            <Label Foreground="{StaticResource Page.OrdinaryPage.FontForeground}" 
+                                   FontSize="{StaticResource Page.FontSize}"
+                                   Grid.Column="1" Content="{Binding}" VerticalAlignment="Center" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Grid Margin="0 0 0 20">
+            <Label Style="{StaticResource Page.InputPrompt.Label.Style}"
+                   Margin="32 23 0 0"
+                   >Latency</Label>
+            <Label Style="{StaticResource Page.InputInformation.Label.Style}"
+                   Margin="32 11 0 0">
+                <AccessText TextWrapping="WrapWithOverflow">
+                    Latency is the amount of time between producing certain amount of sound. It is measured in milliseconds. The less latency the better. Supported values by Windows 10 are 45-100 msec according to MSDN forum.
+                </AccessText>
+            </Label>
+            
+            <Grid Margin="36 11 20 20">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-
-                <Image VerticalAlignment="Center"
-                                   Grid.Column="0" 
-                                   Width="32" Height="32" 
-                                   Source="../Pictures/1453071663_performance-clock-speed.png" 
-                                   ToolTip="Latency (milliseconds, the less the better. Supported values by Windows 10 are 45-100)"/>
-                <Slider VerticalAlignment="Center" Grid.Column="1"  Value="{Binding LatencyMiliseconds}" Minimum="20" Maximum="100" 
-                        PreviewMouseUp="OnLatencySliderMouseUp" />
-                <Label Grid.Column="2" Content="{Binding LatencyMiliseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
+                <Slider VerticalAlignment="Center" Grid.Column="0"  Value="{Binding LatencyMiliseconds}" Minimum="20" Maximum="100" 
+                        PreviewMouseUp="OnLatencySliderMouseUp" FontSize="{StaticResource Page.FontSize}" />
+                <Label Style="{StaticResource Page.Label.Style}" Grid.Column="1" Content="{Binding LatencyMiliseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
             </Grid>
-
         </StackPanel>
     </Grid>
 </Page>

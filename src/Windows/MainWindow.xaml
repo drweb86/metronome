@@ -6,7 +6,7 @@
         xmlns:windows="clr-namespace:Metronome.Windows"
         xmlns:pages="clr-namespace:Metronome.Pages"
         mc:Ignorable="d"
-        Title="Metronome#" Height="500" Width="700" MinHeight="500" Closed="OnClosed"
+        Title="Metronome#" Height="500" Width="700" MinHeight="550" Closed="OnClosed"
         WindowStartupLocation="CenterScreen"
         Icon="../Pictures/1453069499_Metronome.ico">
     <Window.DataContext>
@@ -81,8 +81,10 @@
                 Style="{StaticResource Page.Header.LabelStyle}" 
                 FontSize="{StaticResource Page.FontSize}" Margin="50 9 0 9" FontWeight="Bold"/>
         </StackPanel>
-        <Frame x:Name="_frame"
-            Source="{Binding PageUri}" 
-            NavigationUIVisibility="Hidden" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Frame x:Name="_frame"
+                Source="{Binding PageUri}" 
+                NavigationUIVisibility="Hidden" />
+        </ScrollViewer>
     </DockPanel>
 </Window>
