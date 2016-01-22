@@ -6,7 +6,7 @@
         xmlns:windows="clr-namespace:Metronome.Windows"
         xmlns:pages="clr-namespace:Metronome.Pages"
         mc:Ignorable="d"
-        Title="Metronome#" Height="500" Width="700" MinHeight="550" Closed="OnClosed"
+        Title="Metronome#" MinHeight="500" MinWidth="650" Height="500" Width="650" Closed="OnClosed"
         WindowStartupLocation="CenterScreen"
         Icon="../Pictures/1453069499_Metronome.ico">
     <Window.DataContext>
@@ -75,11 +75,19 @@
                        Margin="0 0 0 -1"
                        Background="{StaticResource LeftBorder.Spacer.BackgroundBrush}"/>
         </DockPanel>
-        <StackPanel DockPanel.Dock="Top"
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
             Style="{StaticResource Page.Header.PanelStyle}">
+            <Button Style="{StaticResource Page.Header.BackButton.Style}"
+                    CommandParameter="{Binding}"  
+                    Command="{Binding NavigateToMainPageCommand}"
+                    Tag="{x:Static pages:PagesHelper.MainPageUri}">
+                <Image Source="../Pictures/1453488470_arrow-left.png" 
+                    ToolTip="Go to main page"
+                    Style="{StaticResource LeftBorder.MainMenuButton.ImageStyle}"/>
+            </Button>
             <Label Content="{Binding ElementName=_frame, Path=Content.Title}" 
                 Style="{StaticResource Page.Header.LabelStyle}" 
-                FontSize="{StaticResource Page.FontSize}" Margin="50 9 0 9" FontWeight="Bold"/>
+                FontSize="{StaticResource Page.FontSize}" Margin="1 9 0 9" FontWeight="Bold"/>
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Frame x:Name="_frame"

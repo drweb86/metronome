@@ -19,13 +19,15 @@
             <converters:TicksFileNameStripperConverter x:Key="TicksFileNameStripperConverter" />
         </ResourceDictionary>
     </Page.Resources>
-    <Grid Background="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0" >Please, select sound:</Label>
-        <ListBox Grid.Row="1"
+    <StackPanel Background="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}">
+        <Label Style="{StaticResource Page.InputPrompt.Label.Style}">Tick-Tock sound file</Label>
+        <Label Style="{StaticResource Page.InputInformation.Label.Style}">
+            <TextBlock TextWrapping="WrapWithOverflow" Width="500" >
+                    You can select tick-tock file in the list below. If tick or tock file has corresponding pair file, they will be used both (one file for tick sound and its pair for tock sound).
+            </TextBlock>
+        </Label>
+        <ListBox Margin="32 11 20 20"
+            Style="{StaticResource Page.ListBox.Style}"
             ItemsSource="{Binding TickSoundFiles}"
             SelectedItem="{Binding SelectedTickSoundFile, Mode=TwoWay}">
             <ListBox.ItemTemplate>
@@ -36,10 +38,13 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073705_music-note-sound.png" />
-                        <Label Grid.Column="1" Content="{Binding Converter={StaticResource TicksFileNameStripperConverter}}" VerticalAlignment="Center" />
+                        <Label 
+                            Foreground="{StaticResource Page.OrdinaryPage.FontForeground}" 
+                            FontSize="{StaticResource Page.FontSize}"
+                            Grid.Column="1" Content="{Binding Converter={StaticResource TicksFileNameStripperConverter}}" VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </Grid>
+    </StackPanel>
 </Page>

@@ -29,11 +29,8 @@
                 ToolTip="Refreshes output devices list">Refresh</Button>
 
             <Label Style="{StaticResource Page.InputPrompt.Label.Style}"
-                   Margin="32 23 0 0"
                    >Output audio device</Label>
-            <Label Style="{StaticResource Page.InputInformation.Label.Style}"
-                   Margin="32 11 0 0"
-                   >Output audio device will be used to output metronome sounds.</Label>
+            <Label Style="{StaticResource Page.InputInformation.Label.Style}">Output audio device will be used to output metronome sounds.</Label>
             <ListBox Style="{StaticResource Page.ListBox.Style}"
                 Margin="36 11 20 0"
                 ItemsSource="{Binding MultimediaDevicesFriendlyNames}"
@@ -54,14 +51,11 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Label Style="{StaticResource Page.InputPrompt.Label.Style}"
-                   Margin="32 23 0 0"
-                   >Latency</Label>
-            <Label Style="{StaticResource Page.InputInformation.Label.Style}"
-                   Margin="32 11 0 0">
-                <AccessText TextWrapping="WrapWithOverflow">
+            <Label Style="{StaticResource Page.InputPrompt.Label.Style}">Latency</Label>
+            <Label Style="{StaticResource Page.InputInformation.Label.Style}">
+                <TextBlock TextWrapping="WrapWithOverflow" Width="500" >
                     Latency is the amount of time between producing certain amount of sound. It is measured in milliseconds. The less latency the better. Supported values by Windows 10 are 45-100 msec according to MSDN forum.
-                </AccessText>
+                </TextBlock>
             </Label>
             
             <Grid Margin="36 11 20 20">
@@ -73,6 +67,7 @@
                         PreviewMouseUp="OnLatencySliderMouseUp" FontSize="{StaticResource Page.FontSize}" />
                 <Label Style="{StaticResource Page.Label.Style}" Grid.Column="1" Content="{Binding LatencyMiliseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}" />
             </Grid>
+            
         </StackPanel>
     </Grid>
 </Page>
