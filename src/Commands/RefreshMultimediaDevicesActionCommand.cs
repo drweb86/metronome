@@ -1,4 +1,5 @@
-﻿using Metronome.Pages;
+﻿using HDE.Platform.Wpf.Commands;
+using Metronome.Pages;
 
 namespace Metronome.Commands
 {

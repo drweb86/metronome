@@ -1,21 +1,29 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using HDE.Platform.AspectOrientedFramework;
+using HDE.Platform.Logging;
+using HDE.Platform.Services;
 using Metronome.Services;
 using NAudio.CoreAudioApi;
 
 namespace Metronome
 {
-    class Controller
+    class Controller: BaseController<Model>
     {
         public static Controller Instance { get; } = new Controller();
 
         public MetronomeService MetronomeService { get; }
-        public Model Model { get; }
+
+        protected override ILog CreateOpenLog()
+        {
+            var log = new SimpleFileLog(Path.Combine(Path.GetTempPath(), "Metronome#"));
+            log.Open();
+            return log;
+        }
 
         private Controller()
         {
-            Model = new Model();
             MetronomeService = new MetronomeService(Model.ToSettings);
             LoadAvailableMusic();
             LoadAvailableSoundDevices();
@@ -104,21 +112,28 @@ namespace Metronome
                 .Test();
         }
 
+        private SettingsService<MetronomeSettings> GetSettingsService()
+        {
+            return new SettingsService<MetronomeSettings>(
+                Log,
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "Metronome#"));
+        }
+
         public void SaveSettings()
         {
-            new MetronomeSettingsService()
+            GetSettingsService()
                 .Save(Model.ToSettings());
         }
 
         public void LoadSettings()
         {
-            var settings = new MetronomeSettingsService()
+            var settings = GetSettingsService()
                 .Load();
 
-            if (settings == null)
-                return;
-
-            Model.FromSettings(settings);
+            if (!settings.Equals(new MetronomeSettings())) // first run or settings are corrupted
+                Model.FromSettings(settings);
         }
     }
 }

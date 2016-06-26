@@ -3,7 +3,7 @@
 namespace Metronome.Services
 {
     [Serializable]
-    class MetronomeSettings: IEquatable<MetronomeSettings>
+    public class MetronomeSettings: IEquatable<MetronomeSettings>
     {
         public MetronomeSettings(
             string selectedTickSoundFile,
@@ -19,17 +19,21 @@ namespace Metronome.Services
             LatencyMseconds = latencyMseconds;
         }
 
-        public string SelectedTickSoundFile { get; }
-        public string SelectedMultimediaDeviceFriendlyName { get; }
-        public float Volume { get; }
-        public int DelayMseconds { get; }
+        public MetronomeSettings()
+        {
+        }
+
+        public string SelectedTickSoundFile { get; set; }
+        public string SelectedMultimediaDeviceFriendlyName { get; set; }
+        public float Volume { get; set; }
+        public int DelayMseconds { get; set; }
         public int LatencyMseconds { get; set; }
 
         public bool Equals(MetronomeSettings other)
         {
             return SelectedTickSoundFile == other.SelectedTickSoundFile &&
                 SelectedMultimediaDeviceFriendlyName == other.SelectedMultimediaDeviceFriendlyName &&
-                Volume == other.Volume &&
+                Math.Abs(Volume - other.Volume) < 0.001 &&
                 DelayMseconds == other.DelayMseconds &&
                 LatencyMseconds == other.LatencyMseconds;
         }

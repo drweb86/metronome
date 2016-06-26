@@ -59,6 +59,9 @@ namespace Metronome.Services
                 var settings = _getSettings(); // support for changing on the fly.
 
                 var device = GetDevice(settings);
+                if (device == null)
+                    return;
+
                 var tickTockFiles = GetTickTockFiles(settings);
 
                 var playingContents = new CircleCollection<Tuple<WasapiOut, WaveStream, WaveChannel32>>();
@@ -125,11 +128,11 @@ namespace Metronome.Services
         {
             //this code is executed in different thread. thats why searching for devices again.
             var enumerator = new MMDeviceEnumerator();
-            enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
 
-            var device = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)
-                .First(item => item.FriendlyName == settings.SelectedMultimediaDeviceFriendlyName);
-            return device;
+            return enumerator
+                .EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)
+                .FirstOrDefault(item => item.FriendlyName == settings.SelectedMultimediaDeviceFriendlyName) ??
+                enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
         }
 
         public void Test()
