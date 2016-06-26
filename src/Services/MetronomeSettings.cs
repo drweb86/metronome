@@ -6,7 +6,7 @@ namespace Metronome.Services
     public class MetronomeSettings: IEquatable<MetronomeSettings>
     {
         public static int DefaultBitsPerMinute => 60;
-        public static int MinimumBitsPerMinute => 30;
+        public static int MinimumBitsPerMinute => 20;
         public static int MaximumBitsPerMinute => 300;
 
         public static double MinimumVolume => 0.01;

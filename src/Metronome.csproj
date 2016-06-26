@@ -75,6 +75,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Collections\CircleCollection.cs" />
+    <Compile Include="Converters\BitsPerMinuteConverter.cs" />
     <Compile Include="Converters\PercentsConverter.cs" />
     <Compile Include="Converters\TicksFileNameStripperConverter.cs" />
     <Compile Include="Directories.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Converters\DoubleToIntConverter.cs" />
     <Compile Include="FileReaderFactory.cs" />
     <Compile Include="Pages\AboutPageViewModel.cs" />
+    <Compile Include="Services\BitsPerMinuteHelper.cs" />
     <Compile Include="Styles\LeftBorderIsSelectedButtonConverter.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

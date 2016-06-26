@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Metronome.Pages"
       xmlns:converters="clr-namespace:Metronome.Converters"
-      xmlns:services="clr-namespace:Metronome.Services"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Metronome"
@@ -15,8 +14,8 @@
     </Page.DataContext>
     <Page.Resources>
         <ResourceDictionary>
-            <converters:DoubleToIntConverter x:Key="DoubleToIntConverter" />
             <converters:PercentsConverter x:Key="PercentsConverter" />
+            <converters:BitsPerMinuteConverter x:Key="BitsPerMinuteConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles/WheatherStyleResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -28,6 +27,7 @@
     <Grid Margin="20 5 20 5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
@@ -117,8 +117,20 @@
                 Minimum="{Binding MinimumBitsPerMinute}" 
                 Maximum="{Binding MaximumBitsPerMinute}" 
                 ToolTip="Bits per minute"/>
-            
 
+        <Label Grid.Row="1" Grid.Column="3"  
+               Content="{Binding BitsPerMinute, Mode=OneWay, Converter={StaticResource BitsPerMinuteConverter}}"  
+               Style="{StaticResource Page.MainPage.Label.Style}" 
+               HorizontalAlignment="Center"
+               HorizontalContentAlignment="Center"
+               ToolTip="Bits per minute">
+            <Label.LayoutTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="90" />
+                    <ScaleTransform ScaleX="-1" ScaleY="-1"/>
+                </TransformGroup>
+            </Label.LayoutTransform>
+        </Label>
     </Grid>
             
 </Page>
