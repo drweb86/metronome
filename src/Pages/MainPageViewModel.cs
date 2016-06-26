@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,7 +21,7 @@ namespace Metronome.Pages
 
                 DelayMseconds = Controller.Model.DelayMseconds;
                 Volume = Controller.Model.Volume;
-                StartMetronomeButtonImageUri = ExecuteMetronomeAsyncCommand.IsRunning ?
+                StartMetronomeButtonImageUri = Controller.MetronomeService.IsRunning ?
                     PicturesHelper.GetStop() :
                     PicturesHelper.GetStart();
             }
@@ -119,9 +120,30 @@ namespace Metronome.Pages
 
         public ICommand CheckSettingsChangeCommand { get; } = new ViewModelActionCommand<MainPageViewModel>(
             vm => Task.Run(() => vm.Controller.TestSound()));
-        public IStoppableInfiniteCommand ExecuteMetronomeAsyncCommand { get; } = new ExecuteMetronomeAsyncCommand();
+
+        public ICommand ExecuteMetronomeAsyncCommand { get; } = new ViewModelActionCommand<MainPageViewModel>(vm => vm.StartOrStopMetronome());
+
+        private void StartOrStopMetronome()
+        {
+            if (string.IsNullOrWhiteSpace(Controller.Model.SelectedTickSoundFile))
+                return;
+
+            StartMetronomeButtonEnabled = false;
+            if (Controller.MetronomeService.IsRunning)
+            {
+                Controller.StopMetronomeSounds();
+                StartMetronomeButtonImageUri = PicturesHelper.GetStart(); 
+            }
+            else
+            {
+                Controller.ProduceMetronomeSounds();
+                StartMetronomeButtonImageUri = PicturesHelper.GetStop();
+            }
+            StartMetronomeButtonEnabled = true;
+        }
+
         public ICommand DestroyPageCommand { get; } = new ViewModelActionCommand<MainPageViewModel>(
-            vm => vm.ExecuteMetronomeAsyncCommand.Stop());
+            vm => { vm.Controller.MetronomeService.Stop(); });
 
         #endregion
 

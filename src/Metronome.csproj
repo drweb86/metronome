@@ -97,6 +97,7 @@
     <Compile Include="Pictures\PicturesHelper.cs" />
     <Compile Include="Services\Copyright.cs" />
     <Compile Include="Services\CopyrightService.cs" />
+    <Compile Include="Services\IMetronomeService.cs" />
     <Compile Include="Services\MetronomeService.cs" />
     <Compile Include="Services\MetronomeSettings.cs" />
     <Compile Include="Services\MetronomeSettingsService.cs" />
@@ -128,8 +129,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\ExecuteMetronomeAsyncCommand.cs" />
-    <Compile Include="Commands\IStoppableInfiniteCommand.cs" />
     <Compile Include="Commands\ViewModelActionCommand.cs" />
     <Compile Include="Commands\RefreshMultimediaDevicesActionCommand.cs" />
     <Compile Include="Commands\ViewModelCommand.cs" />

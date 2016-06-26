@@ -9,45 +9,76 @@ using NAudio.Wave;
 
 namespace Metronome.Services
 {
-    class MetronomeService
+    class MetronomeService: IMetronomeService
     {
-        public bool IsRunning { get; set; }// we should not run neither produce test sounds while metronome is active.
+        private Thread _thread;
+        private readonly Func<MetronomeSettings> _getSettings;
 
-        public void Run(Func<bool> cancel, Func<MetronomeSettings> getSettings)
+        public bool IsRunning
         {
-            try
+            get
             {
-                IsRunning = true;
-                do
+                if (_thread == null)
+                    return false;
+                return _thread.IsAlive;
+            }
+        }
+
+        private volatile bool _isCancellationRequested;
+
+        public MetronomeService(Func<MetronomeSettings> getSettings)
+        {
+            _getSettings = getSettings;
+            _thread = new Thread(Run);
+        }
+
+        public void Start()
+        {
+            if (_thread != null && _thread.IsAlive)
+                throw new InvalidOperationException("MetronomeService is already running.");
+
+            _isCancellationRequested = false;
+            _thread = new Thread(Run);
+            _thread.Start();
+        }
+
+        public void Stop()
+        {
+            if (IsRunning)
+            {
+                _isCancellationRequested = true;
+                _thread.Join();
+                _thread = null;
+            }
+        }
+
+        private void Run()
+        {
+            do
+            {
+                var settings = _getSettings(); // support for changing on the fly.
+
+                var device = GetDevice(settings);
+                var tickTockFiles = GetTickTockFiles(settings);
+
+                var playingContents = new CircleCollection<Tuple<WasapiOut, WaveStream, WaveChannel32>>();
+                foreach (var audioFile in tickTockFiles)
                 {
-                    var settings = getSettings(); // support for changing on the fly.
+                    AddPlayingContent(device, settings, audioFile, playingContents);
+                }
 
-                    var device = GetDevice(settings);
-                    var tickTockFiles = GetTickTockFiles(settings);
+                while (!_isCancellationRequested &&
+                       _getSettings().Equals(settings))
+                {
+                    var playingContent = playingContents.GetNext();
+                    playingContent.Item2.Seek(0, SeekOrigin.Begin);
+                    playingContent.Item1.Play();
 
-                    var playingContents = new CircleCollection<Tuple<WasapiOut, WaveStream, WaveChannel32>>();
-                    foreach (var audioFile in tickTockFiles)
-                    {
-                        AddPlayingContent(device, settings, audioFile, playingContents);
-                    }
+                    Thread.Sleep(settings.DelayMseconds);
+                }
 
-                    while (!cancel() &&
-                           getSettings().Equals(settings))
-                    {
-                        var playingContent = playingContents.GetNext();
-                        playingContent.Item2.Seek(0, SeekOrigin.Begin);
-                        playingContent.Item1.Play();
-
-                        Thread.Sleep(settings.DelayMseconds);
-                    }
-
-                    DisposePlayingContents(playingContents);
-                } while (!cancel());
-            }
-            finally
-            {
-                IsRunning = false;
-            }
+                DisposePlayingContents(playingContents);
+            } while (!_isCancellationRequested);
         }
 
         private static void AddPlayingContent(MMDevice device, MetronomeSettings activeSettings, string audioFile,
@@ -101,10 +132,13 @@ namespace Metronome.Services
             return device;
         }
 
-        public void Test(MetronomeSettings settings)
+        public void Test()
         {
+            // we should not run neither produce test sounds while metronome is active.
             if (IsRunning)
                 return;
+
+            var settings = _getSettings();
 
             var device = GetDevice(settings);
 

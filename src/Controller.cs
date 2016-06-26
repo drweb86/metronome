@@ -10,13 +10,13 @@ namespace Metronome
     {
         public static Controller Instance { get; } = new Controller();
 
-        public MetronomeService MetronomeService { get; } = new MetronomeService();
+        public MetronomeService MetronomeService { get; }
         public Model Model { get; }
 
         private Controller()
         {
             Model = new Model();
-
+            MetronomeService = new MetronomeService(Model.ToSettings);
             LoadAvailableMusic();
             LoadAvailableSoundDevices();
             LoadSettings();
@@ -86,16 +86,22 @@ namespace Metronome
             Model.Copyrights = new CopyrightService().Collect();
         }
 
-        public void ProduceMetronomeSounds(Func<bool> cancel)
+        public void ProduceMetronomeSounds()
         {
             MetronomeService
-                .Run(cancel, Model.ToSettings);
+                .Start();
+        }
+
+        public void StopMetronomeSounds()
+        {
+            MetronomeService
+                .Stop();
         }
 
         public void TestSound()
         {
             MetronomeService
-                .Test(Model.ToSettings());
+                .Test();
         }
 
         public void SaveSettings()
