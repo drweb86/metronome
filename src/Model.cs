@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Metronome.Services;
 
 namespace Metronome
@@ -11,8 +12,32 @@ namespace Metronome
         public IEnumerable<string> MultimediaDevicesFriendlyNames { get; set; }
         public string SelectedMultimediaDeviceFriendlyName { get; set; }
 
-        public float Volume { get; set; } = 1;
-        public int DelayMseconds { get; set; } = 1000;
+        private double _volume { get; set; }
+        public double Volume
+        {
+            get { return _volume; }
+            set
+            {
+                if (!MetronomeSettings.IsVolumeValid((value)))
+                    throw new ArgumentOutOfRangeException(nameof(Volume));
+
+                _volume = value;
+            }
+        }
+
+        private int _bitsPerMinute;
+        public int BitsPerMinute
+        {
+            get { return _bitsPerMinute; }
+            set
+            {
+                if (!MetronomeSettings.IsBitsPerMinuteValid(value))
+                    throw new ArgumentOutOfRangeException(nameof(BitsPerMinute));
+
+                _bitsPerMinute = value;
+            }
+        }
+
         public int LatencyMseconds { get; set; } = 20;
 
         public IEnumerable<Copyright> Copyrights { get; set; }
@@ -23,7 +48,7 @@ namespace Metronome
                 SelectedTickSoundFile,
                 SelectedMultimediaDeviceFriendlyName,
                 Volume,
-                DelayMseconds,
+                BitsPerMinute,
                 LatencyMseconds);
         }
 
@@ -31,8 +56,10 @@ namespace Metronome
         {
             SelectedTickSoundFile = settings.SelectedTickSoundFile;
             SelectedMultimediaDeviceFriendlyName = settings.SelectedMultimediaDeviceFriendlyName;
-            Volume = settings.Volume;
-            DelayMseconds = settings.DelayMseconds;
+
+            Volume = MetronomeSettings.IsVolumeValid(settings.Volume) ? settings.Volume: MetronomeSettings.DefaultVolume;
+            BitsPerMinute = MetronomeSettings.IsBitsPerMinuteValid(settings.BitsPerMinute) ? settings.BitsPerMinute : MetronomeSettings.DefaultBitsPerMinute;
+
             LatencyMseconds = settings.LatencyMseconds;
         }
     }

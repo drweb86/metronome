@@ -77,7 +77,7 @@ namespace Metronome.Services
                     playingContent.Item2.Seek(0, SeekOrigin.Begin);
                     playingContent.Item1.Play();
 
-                    Thread.Sleep(settings.DelayMseconds);
+                    Thread.Sleep(60000 / settings.BitsPerMinute);
                 }
 
                 DisposePlayingContents(playingContents);
@@ -91,7 +91,7 @@ namespace Metronome.Services
             var mainOutputStream = FileReaderFactory.Create(audioFile);
             var volumeStream = new WaveChannel32(mainOutputStream);
             player.Init(volumeStream);
-            volumeStream.Volume = activeSettings.Volume;
+            volumeStream.Volume = (float)activeSettings.Volume;
 
             devices.Add(new Tuple<WasapiOut, WaveStream, WaveChannel32>(
                 player,
@@ -150,7 +150,7 @@ namespace Metronome.Services
             using (WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream))
             {
                 player.Init(volumeStream);
-                volumeStream.Volume = settings.Volume;
+                volumeStream.Volume = (float)settings.Volume;
                 player.Play();
 
                 Thread.Sleep(1000);

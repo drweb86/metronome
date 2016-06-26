@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Metronome.Pages"
       xmlns:converters="clr-namespace:Metronome.Converters"
+      xmlns:services="clr-namespace:Metronome.Services"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Metronome"
@@ -86,10 +87,10 @@
                HorizontalAlignment="Center"
                ToolTip="Volume (%)"/>
         <Label Grid.Row="0" Grid.Column="2"  
-               Content="{Binding DelayMseconds, Mode=OneWay, Converter={StaticResource DoubleToIntConverter}}"  
+               Content="{Binding BitsPerMinute, Mode=OneWay}"  
                Style="{StaticResource Page.MainPage.Label.Style}" 
                HorizontalAlignment="Center"
-               ToolTip="Delay (milliseconds)"/>
+               ToolTip="Bits per minute"/>
 
         <Image Grid.Row="2" Grid.Column="1" 
                HorizontalAlignment="Center"
@@ -100,22 +101,22 @@
                HorizontalAlignment="Center"
                 Width="32" Height="32" 
                 Source="../Pictures/1452999134_Personal_trainer_1.png" 
-                ToolTip="Delay (milliseconds)"/>
+                ToolTip="Bits per minute"/>
         
         <Slider Orientation="Vertical" 
                 HorizontalAlignment="Center" 
                 Grid.Row="1" Grid.Column="1" 
                 Value="{Binding Volume}" 
-                Minimum="0.01" 
-                Maximum="1" 
+                Minimum="{Binding MinimumVolume}" 
+                Maximum="{Binding MaximumVolume}" 
                 ToolTip="Volume (%)"/>
         <Slider Orientation="Vertical" 
                 HorizontalAlignment="Center" 
                 Grid.Row="1" Grid.Column="2"  
-                Value="{Binding DelayMseconds}" 
-                Minimum="1" 
-                Maximum="4000" 
-                ToolTip="Delay (milliseconds)"/>
+                Value="{Binding BitsPerMinute}" 
+                Minimum="{Binding MinimumBitsPerMinute}" 
+                Maximum="{Binding MaximumBitsPerMinute}" 
+                ToolTip="Bits per minute"/>
             
 
     </Grid>

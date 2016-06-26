@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,15 @@ namespace Metronome.Converters
             if (value == null)
                 return Binding.DoNothing;
             else
-                return (int)(double)value;
+                return (int) (double) value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return Binding.DoNothing;
+            if (value == null)
+                return Binding.DoNothing;
+            else
+                return (double)(int)value;
         }
     }
 

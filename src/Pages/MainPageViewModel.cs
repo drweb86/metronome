@@ -1,35 +1,32 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using HDE.Platform.Wpf.Commands;
 using Metronome.Annotations;
-using Metronome.Commands;
 using Metronome.Pictures;
+using Metronome.Services;
 
 namespace Metronome.Pages
 {
     class MainPageViewModel : DependencyObject, INotifyPropertyChanged
     {
-        private readonly bool _initialized;
+        public int MinimumBitsPerMinute => MetronomeSettings.MinimumBitsPerMinute;
+        public int MaximumBitsPerMinute => MetronomeSettings.MaximumBitsPerMinute;
+
+        public double MinimumVolume => MetronomeSettings.MinimumVolume;
+        public double MaximumVolume => MetronomeSettings.MaximumVolume;
+
         public MainPageViewModel()
         {
-            try
-            {
-                Controller = Controller.Instance;
+            Controller = Controller.Instance;
 
-                DelayMseconds = Controller.Model.DelayMseconds;
-                Volume = Controller.Model.Volume;
-                StartMetronomeButtonImageUri = Controller.MetronomeService.IsRunning ?
-                    PicturesHelper.GetStop() :
-                    PicturesHelper.GetStart();
-            }
-            finally
-            {
-                _initialized = true;
-            }
+            BitsPerMinute = Controller.Model.BitsPerMinute;
+            Volume = Controller.Model.Volume;
+            StartMetronomeButtonImageUri = Controller.MetronomeService.IsRunning
+                ? PicturesHelper.GetStop()
+                : PicturesHelper.GetStart();
         }
 
         internal Controller Controller { get; }
@@ -58,24 +55,24 @@ namespace Metronome.Pages
 
         #endregion
 
-        #region Delay Mseconds
+        #region Bits Per Minute
 
-        public static readonly DependencyProperty DelayMsecondsProperty = DependencyProperty.Register(
-            "DelayMseconds", typeof(double), typeof(MainPageViewModel),
-            new FrameworkPropertyMetadata(default(double), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnChangeDelayMseconds));
+        public static readonly DependencyProperty BitsPerMinuteProperty = DependencyProperty.Register(
+            "BitsPerMinute", typeof(int), typeof(MainPageViewModel),
+            new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnChangeBitsPerMinute));
 
-        private static void OnChangeDelayMseconds(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnChangeBitsPerMinute(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = ((MainPageViewModel)d);
-            viewModel.Controller.ChangeDelay((int)(double)e.NewValue);
+            viewModel.Controller.ChangeBitsPerMinute((int)e.NewValue);
         }
 
-        public double DelayMseconds
+        public int BitsPerMinute
         {
-            get { return (double)GetValue(DelayMsecondsProperty); }
+            get { return (int)GetValue(BitsPerMinuteProperty); }
             set
             {
-                SetValue(DelayMsecondsProperty, value);
+                SetValue(BitsPerMinuteProperty, value);
                 OnPropertyChanged();
             }
         }

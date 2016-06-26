@@ -41,9 +41,9 @@ namespace Metronome
             Model.LatencyMseconds = latencyMseconds;
         }
 
-        public void ChangeDelay(int delay)
+        public void ChangeBitsPerMinute(int bitsPerMinute)
         {
-            Model.DelayMseconds = delay;
+            Model.BitsPerMinute = bitsPerMinute;
         }
 
         public void ChangeSelectedTickSoundFile(string selectedTickSoundFile)
