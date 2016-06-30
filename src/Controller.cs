@@ -14,6 +14,7 @@ namespace Metronome
         public static Controller Instance { get; } = new Controller();
 
         public MetronomeService MetronomeService { get; }
+        public ColorIndicatorService ColorIndicatorService { get; }
 
         protected override ILog CreateOpenLog()
         {
@@ -24,13 +25,15 @@ namespace Metronome
 
         private Controller()
         {
-            MetronomeService = new MetronomeService(Model.ToSettings);
+            ColorIndicatorService = new ColorIndicatorService(Model.BitsSequenceLength);
+            MetronomeService = new MetronomeService(Log, Model.ToSettings, ColorIndicatorService);
             LoadAvailableMusic();
             LoadAvailableSoundDevices();
             LoadSettings();
             LoadCopyrights();
+            
         }
-
+        
         public void ChangeVolume(float volume)
         {
             Model.Volume = volume;
@@ -44,6 +47,11 @@ namespace Metronome
         public void ChangeBitsPerMinute(int bitsPerMinute)
         {
             Model.BitsPerMinute = bitsPerMinute;
+        }
+
+        public void ChangeBitsSequenceLength(int value)
+        {
+            Model.BitsSequenceLength = value;
         }
 
         public void ChangeSelectedTickSoundFile(string selectedTickSoundFile)

@@ -38,6 +38,18 @@ namespace Metronome
             }
         }
 
+        private int _bitsSequenceLength = MetronomeSettings.DefaultBitsSequenceLength;
+        public int BitsSequenceLength
+        {
+            get { return _bitsSequenceLength; }
+            set {
+                if (!MetronomeSettings.IsBitsSequenceLength(value))
+                    throw new ArgumentOutOfRangeException(nameof(BitsSequenceLength));
+
+                _bitsSequenceLength = value;
+            }
+        }
+
         public int LatencyMseconds { get; set; } = 20;
 
         public IEnumerable<Copyright> Copyrights { get; set; }
@@ -49,7 +61,8 @@ namespace Metronome
                 SelectedMultimediaDeviceFriendlyName,
                 Volume,
                 BitsPerMinute,
-                LatencyMseconds);
+                LatencyMseconds,
+                BitsSequenceLength);
         }
 
         public void FromSettings(MetronomeSettings settings)
@@ -59,6 +72,7 @@ namespace Metronome
 
             Volume = MetronomeSettings.IsVolumeValid(settings.Volume) ? settings.Volume: MetronomeSettings.DefaultVolume;
             BitsPerMinute = MetronomeSettings.IsBitsPerMinuteValid(settings.BitsPerMinute) ? settings.BitsPerMinute : MetronomeSettings.DefaultBitsPerMinute;
+            BitsSequenceLength = MetronomeSettings.IsBitsSequenceLength(settings.BitsSequenceLength) ? settings.BitsSequenceLength : MetronomeSettings.DefaultBitsSequenceLength;
 
             LatencyMseconds = settings.LatencyMseconds;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Metronome.Collections;
+using HDE.Platform.Logging;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 
@@ -11,8 +11,10 @@ namespace Metronome.Services
 {
     class MetronomeService: IMetronomeService
     {
+        private readonly ILog _log;
         private Thread _thread;
         private readonly Func<MetronomeSettings> _getSettings;
+        private readonly ColorIndicatorService _colorIndicatorService;
 
         public bool IsRunning
         {
@@ -26,9 +28,14 @@ namespace Metronome.Services
 
         private volatile bool _isCancellationRequested;
 
-        public MetronomeService(Func<MetronomeSettings> getSettings)
+        public MetronomeService(
+            ILog log,
+            Func<MetronomeSettings> getSettings,
+            ColorIndicatorService colorIndicatorService)
         {
+            _log = log;
             _getSettings = getSettings;
+            _colorIndicatorService = colorIndicatorService;
             _thread = new Thread(Run);
         }
 
@@ -58,34 +65,52 @@ namespace Metronome.Services
             {
                 var settings = _getSettings(); // support for changing on the fly.
 
+                // Output audio device.
                 var device = GetDevice(settings);
                 if (device == null)
-                    return;
-
-                var tickTockFiles = GetTickTockFiles(settings);
-
-                var playingContents = new CircleCollection<Tuple<WasapiOut, WaveStream, WaveChannel32>>();
-                foreach (var audioFile in tickTockFiles)
                 {
-                    AddPlayingContent(device, settings, audioFile, playingContents);
+                    _log.Error("Unable to get output audio device.");
+                    return;
                 }
+
+                // Color indicator setup
+                _colorIndicatorService.Reset(settings.BitsSequenceLength);
+
+                // Tick tock files
+                var tickTockFiles = GetTickTockFiles(settings);
+                if (tickTockFiles.Count == 0)
+                {
+                    _log.Error("List of audio files is empty.");
+                    return;
+                }
+                if (tickTockFiles.Count > 2)
+                {
+                    _log.Warning("Only first and last files will be used.");
+                }
+
+                var firstPlayingContent = ToPlayingContent(device, settings, tickTockFiles.First());
+                var lastPlayingContent = ToPlayingContent(device, settings, tickTockFiles.Last());
 
                 while (!_isCancellationRequested &&
                        _getSettings().Equals(settings))
                 {
-                    var playingContent = playingContents.GetNext();
+                    bool isLast;
+                    _colorIndicatorService.Bit(out isLast);
+
+                    var playingContent = isLast ? firstPlayingContent : lastPlayingContent;
+
                     playingContent.Item2.Seek(0, SeekOrigin.Begin);
                     playingContent.Item1.Play();
 
                     Thread.Sleep(60000 / settings.BitsPerMinute);
                 }
 
-                DisposePlayingContents(playingContents);
+                DisposePlayingContent(firstPlayingContent);
+                DisposePlayingContent(lastPlayingContent);
             } while (!_isCancellationRequested);
         }
 
-        private static void AddPlayingContent(MMDevice device, MetronomeSettings activeSettings, string audioFile,
-            CircleCollection<Tuple<WasapiOut, WaveStream, WaveChannel32>> devices)
+        private static Tuple<WasapiOut, WaveStream, WaveChannel32> ToPlayingContent(MMDevice device, MetronomeSettings activeSettings, string audioFile)
         {
             var player = new WasapiOut(device, AudioClientShareMode.Shared, false, activeSettings.LatencyMseconds);
             var mainOutputStream = FileReaderFactory.Create(audioFile);
@@ -93,10 +118,10 @@ namespace Metronome.Services
             player.Init(volumeStream);
             volumeStream.Volume = (float)activeSettings.Volume;
 
-            devices.Add(new Tuple<WasapiOut, WaveStream, WaveChannel32>(
+            return new Tuple<WasapiOut, WaveStream, WaveChannel32>(
                 player,
                 mainOutputStream,
-                volumeStream));
+                volumeStream);
         }
 
         private static List<string> GetTickTockFiles(MetronomeSettings settings) // we support tick-tocks which contains of 2 files
@@ -114,14 +139,11 @@ namespace Metronome.Services
             return result;
         }
 
-        private static void DisposePlayingContents(CircleCollection<Tuple<WasapiOut, WaveStream, WaveChannel32>> playingContents)
+        private static void DisposePlayingContent(Tuple<WasapiOut, WaveStream, WaveChannel32> content)
         {
-            foreach (var item in playingContents.GetItems())
-            {
-                item.Item3.Dispose();
-                item.Item2.Dispose();
-                item.Item1.Dispose();
-            }
+            content.Item3.Dispose();
+            content.Item2.Dispose();
+            content.Item1.Dispose();
         }
 
         private static MMDevice GetDevice(MetronomeSettings settings)

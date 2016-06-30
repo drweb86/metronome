@@ -12,6 +12,9 @@ namespace Metronome.Pages
 {
     class MainPageViewModel : DependencyObject, INotifyPropertyChanged
     {
+        public int MinimumBitsSequenceLength => MetronomeSettings.MinimumBitsSequenceLength;
+        public int MaximumBitsSequenceLength => MetronomeSettings.MaximumBitsSequenceLength;
+
         public int MinimumBitsPerMinute => MetronomeSettings.MinimumBitsPerMinute;
         public int MaximumBitsPerMinute => MetronomeSettings.MaximumBitsPerMinute;
 
@@ -27,6 +30,7 @@ namespace Metronome.Pages
             StartMetronomeButtonImageUri = Controller.MetronomeService.IsRunning
                 ? PicturesHelper.GetStop()
                 : PicturesHelper.GetStart();
+            BitsSequenceLength = Controller.Model.BitsSequenceLength;
         }
 
         internal Controller Controller { get; }
@@ -51,6 +55,30 @@ namespace Metronome.Pages
                 SetValue(VolumeProperty, value);
                 OnPropertyChanged();
             }
+        }
+
+        #endregion
+
+        #region BitsSequenceLength
+
+        public static readonly DependencyProperty BitsSequenceLengthProperty = DependencyProperty.Register(
+            "BitsSequenceLength", typeof (int), typeof (MainPageViewModel),
+            new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnBitsSequenceLength));
+
+        public int BitsSequenceLength
+        {
+            get { return (int) GetValue(BitsSequenceLengthProperty); }
+            set
+            {
+                SetValue(BitsSequenceLengthProperty, value);
+                OnPropertyChanged();
+            }
+        }
+
+        private static void OnBitsSequenceLength(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = ((MainPageViewModel)d);
+            viewModel.Controller.ChangeBitsSequenceLength((int)e.NewValue);
         }
 
         #endregion

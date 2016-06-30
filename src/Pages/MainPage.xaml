@@ -30,6 +30,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -91,7 +92,12 @@
                Style="{StaticResource Page.MainPage.Label.Style}" 
                HorizontalAlignment="Center"
                ToolTip="Bits per minute"/>
-
+        <Label Grid.Row="0" Grid.Column="4"  
+               Content="{Binding BitsSequenceLength, Mode=OneWay}"  
+               Style="{StaticResource Page.MainPage.Label.Style}" 
+               HorizontalAlignment="Center"
+               ToolTip="Amount of bits in a row"/>
+        
         <Image Grid.Row="2" Grid.Column="1" 
                HorizontalAlignment="Center"
                 Width="32" Height="32" 
@@ -102,6 +108,11 @@
                 Width="32" Height="32" 
                 Source="../Pictures/1452999134_Personal_trainer_1.png" 
                 ToolTip="Bits per minute"/>
+        <Image Grid.Row="2" Grid.Column="4"
+               HorizontalAlignment="Center"
+                Width="32" Height="32" 
+                Source="../Pictures/ColorWheel_16x.png" 
+                ToolTip="Amount of bits in a row"/>
         
         <Slider Orientation="Vertical" 
                 HorizontalAlignment="Center" 
@@ -131,6 +142,14 @@
                 </TransformGroup>
             </Label.LayoutTransform>
         </Label>
+
+        <Slider Orientation="Vertical" 
+                HorizontalAlignment="Center" 
+                Grid.Row="1" Grid.Column="4"  
+                Value="{Binding BitsSequenceLength}" 
+                Minimum="{Binding MinimumBitsSequenceLength}" 
+                Maximum="{Binding MaximumBitsSequenceLength}" 
+                ToolTip="Amount of bits in a row"/>
     </Grid>
             
 </Page>

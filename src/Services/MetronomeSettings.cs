@@ -5,6 +5,10 @@ namespace Metronome.Services
     [Serializable]
     public class MetronomeSettings: IEquatable<MetronomeSettings>
     {
+        public static int DefaultBitsSequenceLength => 2;
+        public static int MinimumBitsSequenceLength => 1;
+        public static int MaximumBitsSequenceLength => 8;
+
         public static int DefaultBitsPerMinute => 60;
         public static int MinimumBitsPerMinute => 20;
         public static int MaximumBitsPerMinute => 300;
@@ -12,6 +16,12 @@ namespace Metronome.Services
         public static double MinimumVolume => 0.01;
         public static double MaximumVolume => 1;
         public static double DefaultVolume => 1;
+
+        public static bool IsBitsSequenceLength(int bitsSequenceLength)
+        {
+            return bitsSequenceLength >= MinimumBitsSequenceLength &&
+                    bitsSequenceLength <= MaximumBitsSequenceLength;
+        }
 
         public static bool IsBitsPerMinuteValid(int bitsPerMinute)
         {
@@ -30,18 +40,22 @@ namespace Metronome.Services
             string selectedMultimediaDeviceFriendlyName,
             double volume,
             int bitsPerMinute,
-            int latencyMseconds)
+            int latencyMseconds,
+            int bitsSequenceLength)
         {
             if (!IsBitsPerMinuteValid(bitsPerMinute))
                 throw new ArgumentOutOfRangeException(nameof(bitsPerMinute));
             if (!IsVolumeValid(volume))
                 throw new ArgumentOutOfRangeException(nameof(volume));
+            if (!IsBitsSequenceLength(bitsSequenceLength))
+                throw new ArgumentOutOfRangeException(nameof(bitsSequenceLength));
 
             SelectedTickSoundFile = selectedTickSoundFile;
             SelectedMultimediaDeviceFriendlyName = selectedMultimediaDeviceFriendlyName;
             Volume = volume;
             BitsPerMinute = bitsPerMinute;
             LatencyMseconds = latencyMseconds;
+            BitsSequenceLength = bitsSequenceLength;
         }
 
         public MetronomeSettings()
@@ -53,14 +67,17 @@ namespace Metronome.Services
         public double Volume { get; set; }
         public int BitsPerMinute { get; set; }
         public int LatencyMseconds { get; set; }
+        public int BitsSequenceLength { get; set; }
 
         public bool Equals(MetronomeSettings other)
         {
-            return SelectedTickSoundFile == other.SelectedTickSoundFile &&
+            return 
+                SelectedTickSoundFile == other.SelectedTickSoundFile &&
                 SelectedMultimediaDeviceFriendlyName == other.SelectedMultimediaDeviceFriendlyName &&
                 Math.Abs(Volume - other.Volume) < 0.001 &&
                 BitsPerMinute == other.BitsPerMinute &&
-                LatencyMseconds == other.LatencyMseconds;
+                LatencyMseconds == other.LatencyMseconds &&
+                BitsSequenceLength == other.BitsSequenceLength;
         }
     }
 }
