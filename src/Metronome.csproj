@@ -95,7 +95,7 @@
     <Compile Include="Pages\MainPageViewModel.cs" />
     <Compile Include="Pages\PagesHelper.cs" />
     <Compile Include="Pictures\PicturesHelper.cs" />
-    <Compile Include="Services\BitsSelectionService.cs" />
+    <Compile Include="Services\ColorIndicatorService.cs" />
     <Compile Include="Services\ColorIndicatorEventArgs.cs" />
     <Compile Include="Services\Copyright.cs" />
     <Compile Include="Services\CopyrightService.cs" />
@@ -201,9 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pictures\1453422794_speaker.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Pictures\music-1425878.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pictures\1453488470_arrow-left.png" />

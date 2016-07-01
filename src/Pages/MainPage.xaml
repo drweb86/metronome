@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Metronome"
-      >
+      Background="Black">
     <Page.DataContext>
         <local:MainPageViewModel />
     </Page.DataContext>
@@ -21,9 +21,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Page.Background>
-        <ImageBrush ImageSource="{StaticResource Page.MainPage.BackgroundImage}" Stretch="UniformToFill"/>
-    </Page.Background>
     <Grid Margin="20 5 20 5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -37,50 +34,89 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <Button Grid.Column="0"
-                Grid.Row="1"
-                Margin="50 50 50 50"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Width="120"
-                Height="120"
-                CommandParameter="{Binding}"
-                Command="{Binding ExecuteMetronomeAsyncCommand}" 
-                IsEnabled="{Binding StartMetronomeButtonEnabled}"
-                >
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border Name="border" BorderThickness="2" 
-                        ToolTip="Start/Stop metronome">
-                        <Grid>
-                            <Ellipse />
-                            <Image 
-                                Opacity="{TemplateBinding Opacity}"
-                                Source="{Binding StartMetronomeButtonImageUri}" 
-                                ToolTip="Start/Stop metronome" 
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Opacity" Value="0.8" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="1" />
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="Opacity" Value="1" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-                
-            </Button.Style>
-        </Button>
 
+        <Grid Grid.Column="0"
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Margin="0 0 10 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl Grid.Column="0" VerticalAlignment="Center" Margin="0 20 0 20"
+                          ItemsSource="{Binding ColorIndicators}"
+                          >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,0,5,5" Height="120">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Background" Value="GreenYellow" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="True">
+                                            <Setter Property="Background" Value="Green" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Button Grid.Column="1"
+                    Margin="50 50 50 50"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Width="120"
+                    Height="120"
+                    CommandParameter="{Binding}"
+                    Command="{Binding ExecuteMetronomeAsyncCommand}" 
+                    IsEnabled="{Binding StartMetronomeButtonEnabled}"
+                    >
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="2" 
+                            ToolTip="Start/Stop metronome">
+                            <Grid>
+                                <Ellipse />
+                                <Image 
+                                    Opacity="{TemplateBinding Opacity}"
+                                    Source="{Binding StartMetronomeButtonImageUri}" 
+                                    ToolTip="Start/Stop metronome" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Opacity" Value="0.8" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="1" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Opacity" Value="1" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                
+                </Button.Style>
+            </Button>
+
+        </Grid>
 
         <Label Grid.Row="0" Grid.Column="1"  
                Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" 

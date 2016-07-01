@@ -31,8 +31,6 @@
     <SolidColorBrush x:Key="Page.Header.OrdinaryPage.BackgroundBrush" Color="{StaticResource Page.Header.OrdinaryPage.BackgroundColor}" />
 
 
-    <BitmapImage x:Key="Page.MainPage.BackgroundImage">../Pictures/music-1425878.jpg</BitmapImage>
-
     <system:Double x:Key="Page.FontSize">15</system:Double>
     <system:Double x:Key="Page.InputInformation.FontSize">13</system:Double>
 

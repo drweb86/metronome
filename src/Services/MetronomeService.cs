@@ -110,8 +110,9 @@ namespace Metronome.Services
             } while (!_isCancellationRequested);
         }
 
-        private static Tuple<WasapiOut, WaveStream, WaveChannel32> ToPlayingContent(MMDevice device, MetronomeSettings activeSettings, string audioFile)
+        private Tuple<WasapiOut, WaveStream, WaveChannel32> ToPlayingContent(MMDevice device, MetronomeSettings activeSettings, string audioFile)
         {
+            _log.Write(LoggingEvent.Debug, $"Creating playing content for {audioFile}");
             var player = new WasapiOut(device, AudioClientShareMode.Shared, false, activeSettings.LatencyMseconds);
             var mainOutputStream = FileReaderFactory.Create(audioFile);
             var volumeStream = new WaveChannel32(mainOutputStream);

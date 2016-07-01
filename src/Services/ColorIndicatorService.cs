@@ -23,18 +23,26 @@ namespace Metronome.Services
 
         public void Bit(out bool isLast)
         {
-            if (_colorIndicatorState.All(item => item))
+            if (_colorIndicatorState.Length == 1)
+            {
+                _colorIndicatorState[0] = !_colorIndicatorState[0];
+                isLast = false;
+            }
+            else
+            {
+                if (_colorIndicatorState.All(item => item))
+                    for (int i = 0; i < _colorIndicatorState.Length; i++)
+                        _colorIndicatorState[i] = false;
+
                 for (int i = 0; i < _colorIndicatorState.Length; i++)
-                    _colorIndicatorState[i] = false;
+                    if (!_colorIndicatorState[i])
+                    {
+                        _colorIndicatorState[i] = true;
+                        break;
+                    }
 
-            for (int i = 0; i < _colorIndicatorState.Length; i++)
-                if (!_colorIndicatorState[i])
-                {
-                    _colorIndicatorState[i] = true;
-                    break;
-                }
-
-            isLast = _colorIndicatorState.Length > 1 && _colorIndicatorState[_colorIndicatorState.Length - 1];
+                isLast = _colorIndicatorState.Length > 1 && _colorIndicatorState[_colorIndicatorState.Length - 1];
+            }
             InvokeColorIndicatorChanged();
         }
 

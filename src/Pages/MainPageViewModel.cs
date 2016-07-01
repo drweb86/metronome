@@ -1,8 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using HDE.Platform.Wpf.Commands;
 using Metronome.Annotations;
 using Metronome.Pictures;
@@ -31,6 +35,26 @@ namespace Metronome.Pages
                 ? PicturesHelper.GetStop()
                 : PicturesHelper.GetStart();
             BitsSequenceLength = Controller.Model.BitsSequenceLength;
+
+            Controller.ColorIndicatorService.ColorIndicatorChanged += (sender, args) => Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    OnColorIndicatorChanged(sender, args);
+                }));
+        }
+
+        private readonly object _syncObject = new object();
+        private void OnColorIndicatorChanged(object sender, ColorIndicatorEventArgs e)
+        {
+            lock (_syncObject)
+            {
+                if (e.Mask.Length != ColorIndicators.Count)
+                {
+                    ColorIndicators.Clear();
+                    ColorIndicators = new ObservableCollection<bool>(new bool[e.Mask.Length]);
+                }
+                for (int i = 0; i < e.Mask.Length; i++)
+                    ColorIndicators[i] = e.Mask[i];
+            }
         }
 
         internal Controller Controller { get; }
@@ -79,6 +103,27 @@ namespace Metronome.Pages
         {
             var viewModel = ((MainPageViewModel)d);
             viewModel.Controller.ChangeBitsSequenceLength((int)e.NewValue);
+            lock (viewModel._syncObject)
+            {
+                viewModel.ColorIndicators = new ObservableCollection<bool>(new bool[viewModel.Controller.Model.BitsSequenceLength]);
+            }
+        }
+
+        #endregion
+
+        #region Color Indicators
+
+        public static readonly DependencyProperty ColorIndicatorsProperty = DependencyProperty.Register(
+            "ColorIndicators", typeof (ObservableCollection<bool>), typeof (MainPageViewModel), new PropertyMetadata(default(ObservableCollection<bool>)));
+
+        public ObservableCollection<bool> ColorIndicators
+        {
+            get { return (ObservableCollection<bool>) GetValue(ColorIndicatorsProperty); }
+            set
+            {
+                SetValue(ColorIndicatorsProperty, value); 
+                OnPropertyChanged();
+            }
         }
 
         #endregion
