@@ -21,24 +21,8 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid Margin="20 5 20 5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Column="0"
-                Grid.Row="0"
-                Grid.RowSpan="3"
-                Margin="0 0 10 0">
+    <StackPanel Margin="20 5 20 5">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -46,7 +30,7 @@
 
             <ItemsControl Grid.Column="0" VerticalAlignment="Center" Margin="0 20 0 20"
                           ItemsSource="{Binding ColorIndicators}"
-                          >
+                         >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Rows="1" />
@@ -59,7 +43,7 @@
                                 <Style TargetType="Grid">
                                     <Setter Property="Background" Value="GreenYellow" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding}" Value="True">
+                                        <DataTrigger Binding="{Binding Path=Value}" Value="True">
                                             <Setter Property="Background" Value="Green" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -68,7 +52,11 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="30" 
+                                Text="{Binding Path=Key}"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -82,8 +70,7 @@
                     Height="120"
                     CommandParameter="{Binding}"
                     Command="{Binding ExecuteMetronomeAsyncCommand}" 
-                    IsEnabled="{Binding StartMetronomeButtonEnabled}"
-                    >
+                    IsEnabled="{Binding StartMetronomeButtonEnabled}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Name="border" BorderThickness="2" 
@@ -117,75 +104,82 @@
             </Button>
 
         </Grid>
-
-        <Label Grid.Row="0" Grid.Column="1"  
-               Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" 
-               Style="{StaticResource Page.MainPage.Label.Style}" 
-               HorizontalAlignment="Center"
-               ToolTip="Volume (%)"/>
-        <Label Grid.Row="0" Grid.Column="2"  
-               Content="{Binding BitsPerMinute, Mode=OneWay}"  
-               Style="{StaticResource Page.MainPage.Label.Style}" 
-               HorizontalAlignment="Center"
-               ToolTip="Bits per minute"/>
-        <Label Grid.Row="0" Grid.Column="4"  
-               Content="{Binding BitsSequenceLength, Mode=OneWay}"  
-               Style="{StaticResource Page.MainPage.Label.Style}" 
-               HorizontalAlignment="Center"
-               ToolTip="Amount of bits in a row"/>
         
-        <Image Grid.Row="2" Grid.Column="1" 
-               HorizontalAlignment="Center"
-                Width="32" Height="32" 
-                Source="../Pictures/1452998965_volume-70px.png" 
-                ToolTip="Volume (%)"/>
-        <Image Grid.Row="2" Grid.Column="2"
-               HorizontalAlignment="Center"
-                Width="32" Height="32" 
-                Source="../Pictures/1452999134_Personal_trainer_1.png" 
-                ToolTip="Bits per minute"/>
-        <Image Grid.Row="2" Grid.Column="4"
-               HorizontalAlignment="Center"
-                Width="32" Height="32" 
-                Source="../Pictures/ColorWheel_16x.png" 
-                ToolTip="Amount of bits in a row"/>
-        
-        <Slider Orientation="Vertical" 
-                HorizontalAlignment="Center" 
-                Grid.Row="1" Grid.Column="1" 
-                Value="{Binding Volume}" 
-                Minimum="{Binding MinimumVolume}" 
-                Maximum="{Binding MaximumVolume}" 
-                ToolTip="Volume (%)"/>
-        <Slider Orientation="Vertical" 
-                HorizontalAlignment="Center" 
-                Grid.Row="1" Grid.Column="2"  
-                Value="{Binding BitsPerMinute}" 
-                Minimum="{Binding MinimumBitsPerMinute}" 
-                Maximum="{Binding MaximumBitsPerMinute}" 
-                ToolTip="Bits per minute"/>
-
-        <Label Grid.Row="1" Grid.Column="3"  
-               Content="{Binding BitsPerMinute, Mode=OneWay, Converter={StaticResource BitsPerMinuteConverter}}"  
-               Style="{StaticResource Page.MainPage.Label.Style}" 
-               HorizontalAlignment="Center"
-               HorizontalContentAlignment="Center"
-               ToolTip="Bits per minute">
-            <Label.LayoutTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="90" />
-                    <ScaleTransform ScaleX="-1" ScaleY="-1"/>
-                </TransformGroup>
-            </Label.LayoutTransform>
-        </Label>
-
-        <Slider Orientation="Vertical" 
-                HorizontalAlignment="Center" 
-                Grid.Row="1" Grid.Column="4"  
-                Value="{Binding BitsSequenceLength}" 
-                Minimum="{Binding MinimumBitsSequenceLength}" 
-                Maximum="{Binding MaximumBitsSequenceLength}" 
-                ToolTip="Amount of bits in a row"/>
-    </Grid>
-            
+        <Expander Header="Volume / Bits per minute / Bits in a row" Foreground="White">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="2"  
+                       Content="{Binding Volume, Mode=OneWay, Converter={StaticResource PercentsConverter}}" 
+                       Style="{StaticResource Page.MainPage.Label.Style}" 
+                       VerticalAlignment="Center"
+                       ToolTip="Volume (%)"/>
+                <Label Grid.Row="1" Grid.Column="2"  
+                       Content="{Binding BitsPerMinute, Mode=OneWay}"  
+                       Style="{StaticResource Page.MainPage.Label.Style}" 
+                       VerticalAlignment="Center"
+                       ToolTip="Bits per minute"/>
+                <Label Grid.Row="2" Grid.Column="2"  
+                       Content="{Binding BitsSequenceLength, Mode=OneWay}"  
+                       Style="{StaticResource Page.MainPage.Label.Style}" 
+                       VerticalAlignment="Center"
+                       ToolTip="Amount of bits in a row"/>
+                
+                <Image Grid.Row="0" Grid.Column="0" 
+                       VerticalAlignment="Center"
+                       Width="32" Height="32" 
+                       Source="../Pictures/1452998965_volume-70px.png" 
+                       ToolTip="Volume (%)"/>
+                <Image Grid.Row="1" Grid.Column="0"
+                       VerticalAlignment="Center"
+                       Width="32" Height="32" 
+                       Source="../Pictures/1452999134_Personal_trainer_1.png" 
+                       ToolTip="Bits per minute"/>
+                <Image Grid.Row="2" Grid.Column="0"
+                       VerticalAlignment="Center"
+                       Width="32" Height="32" 
+                       Source="../Pictures/ColorWheel_16x.png" 
+                       ToolTip="Amount of bits in a row"/>
+                
+                <Slider
+                        VerticalAlignment="Center" 
+                        Grid.Row="0" Grid.Column="1" 
+                        Value="{Binding Volume}" 
+                        Minimum="{Binding MinimumVolume}" 
+                        Maximum="{Binding MaximumVolume}" 
+                        ToolTip="Volume (%)"/>
+                <Slider
+                        VerticalAlignment="Center" 
+                        Grid.Row="1" Grid.Column="1"  
+                        Value="{Binding BitsPerMinute}" 
+                        Minimum="{Binding MinimumBitsPerMinute}" 
+                        Maximum="{Binding MaximumBitsPerMinute}" 
+                        ToolTip="Bits per minute"/>
+                <Slider
+                    VerticalAlignment="Center" 
+                    Grid.Row="2" Grid.Column="1"  
+                    Value="{Binding BitsSequenceLength}" 
+                    Minimum="{Binding MinimumBitsSequenceLength}" 
+                    Maximum="{Binding MaximumBitsSequenceLength}" 
+                    ToolTip="Amount of bits in a row"/>
+                
+                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                       Content="{Binding BitsPerMinute, Mode=OneWay, Converter={StaticResource BitsPerMinuteConverter}}"  
+                       Style="{StaticResource Page.MainPage.Label.Style}" 
+                       VerticalAlignment="Center"
+                       VerticalContentAlignment="Center"
+                       HorizontalContentAlignment="Center"
+                       ToolTip="Bits per minute" />
+            </Grid>
+        </Expander>
+    </StackPanel>
 </Page>

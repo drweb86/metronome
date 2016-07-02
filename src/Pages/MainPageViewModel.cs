@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace Metronome.Pages
                 : PicturesHelper.GetStart();
             BitsSequenceLength = Controller.Model.BitsSequenceLength;
 
+            //TODO: there will be a memory leak, because VM is created twice for some reason.
             Controller.ColorIndicatorService.ColorIndicatorChanged += (sender, args) => Dispatcher.BeginInvoke((Action)(() =>
                 {
                     OnColorIndicatorChanged(sender, args);
@@ -47,13 +49,17 @@ namespace Metronome.Pages
         {
             lock (_syncObject)
             {
-                if (e.Mask.Length != ColorIndicators.Count)
+                if (ColorIndicators == null || e.Mask.Length != ColorIndicators.Count)
                 {
-                    ColorIndicators.Clear();
-                    ColorIndicators = new ObservableCollection<bool>(new bool[e.Mask.Length]);
+                    var result = new List<KeyValuePair<int, bool>>();
+                    for (int i = 0; i < e.Mask.Length; i++)
+                        result.Add(new KeyValuePair<int, bool>(i + 1, e.Mask[i]));
+
+                    ColorIndicators = new ObservableCollection<KeyValuePair<int, bool>>(result);
+                    return;
                 }
                 for (int i = 0; i < e.Mask.Length; i++)
-                    ColorIndicators[i] = e.Mask[i];
+                    ColorIndicators[i] = new KeyValuePair<int, bool>(i + 1, e.Mask[i]);
             }
         }
 
@@ -103,10 +109,7 @@ namespace Metronome.Pages
         {
             var viewModel = ((MainPageViewModel)d);
             viewModel.Controller.ChangeBitsSequenceLength((int)e.NewValue);
-            lock (viewModel._syncObject)
-            {
-                viewModel.ColorIndicators = new ObservableCollection<bool>(new bool[viewModel.Controller.Model.BitsSequenceLength]);
-            }
+            viewModel.OnColorIndicatorChanged(null, new ColorIndicatorEventArgs(new bool[(int)e.NewValue]));
         }
 
         #endregion
@@ -114,11 +117,11 @@ namespace Metronome.Pages
         #region Color Indicators
 
         public static readonly DependencyProperty ColorIndicatorsProperty = DependencyProperty.Register(
-            "ColorIndicators", typeof (ObservableCollection<bool>), typeof (MainPageViewModel), new PropertyMetadata(default(ObservableCollection<bool>)));
+            "ColorIndicators", typeof (ObservableCollection<KeyValuePair<int, bool>>), typeof (MainPageViewModel), new PropertyMetadata(default(ObservableCollection<KeyValuePair<int, bool>>)));
 
-        public ObservableCollection<bool> ColorIndicators
+        public ObservableCollection<KeyValuePair<int, bool>> ColorIndicators
         {
-            get { return (ObservableCollection<bool>) GetValue(ColorIndicatorsProperty); }
+            get { return (ObservableCollection<KeyValuePair<int, bool>>) GetValue(ColorIndicatorsProperty); }
             set
             {
                 SetValue(ColorIndicatorsProperty, value); 

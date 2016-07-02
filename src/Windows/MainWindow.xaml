@@ -6,7 +6,7 @@
         xmlns:windows="clr-namespace:Metronome.Windows"
         xmlns:pages="clr-namespace:Metronome.Pages"
         mc:Ignorable="d"
-        Title="Metronome#" MinHeight="500" MinWidth="650" Height="500" Width="650" Closed="OnClosed"
+        Title="Metronome#" MinHeight="350" MinWidth="650" Height="350" Width="650" Closed="OnClosed"
         WindowStartupLocation="CenterScreen"
         Icon="../Pictures/1453069499_Metronome.ico">
     <Window.DataContext>
