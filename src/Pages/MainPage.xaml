@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Metronome"
-      Background="Black">
+      Background="#1b1b1b">
     <Page.DataContext>
         <local:MainPageViewModel />
     </Page.DataContext>
@@ -38,13 +38,14 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
+                        <!--GreenYellow Green -->
                         <Grid Margin="0,0,5,5" Height="120">
                             <Grid.Style>
                                 <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="GreenYellow" />
+                                    <Setter Property="Background" Value="#3182a4" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Path=Value}" Value="True">
-                                            <Setter Property="Background" Value="Green" />
+                                            <Setter Property="Background" Value="#073642" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -68,6 +69,7 @@
                     HorizontalAlignment="Center"
                     Width="120"
                     Height="120"
+                    Focusable="False"
                     CommandParameter="{Binding}"
                     Command="{Binding ExecuteMetronomeAsyncCommand}" 
                     IsEnabled="{Binding StartMetronomeButtonEnabled}">
