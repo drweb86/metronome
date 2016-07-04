@@ -11,19 +11,11 @@ namespace Metronome.Windows
 {
     public class MainWindowViewModel : DependencyObject, INotifyPropertyChanged
     {
-        private readonly bool _initialized;
         public MainWindowViewModel()
         {
-            try
-            {
-                Controller = Controller.Instance;
+            Controller = Controller.Instance;
 
-                PageUri = PagesHelper.MainPageUri;
-            }
-            finally
-            {
-                _initialized = true;
-            }
+            PageUri = PagesHelper.MainPageUri;
         }
 
         internal Controller Controller { get; }
