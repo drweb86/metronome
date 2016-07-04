@@ -80,11 +80,11 @@
                             <Grid>
                                 <Ellipse />
                                 <Image 
-                                    Opacity="{TemplateBinding Opacity}"
+                                    Opacity="0.6"
                                     Source="{Binding StartMetronomeButtonImageUri}" 
                                     ToolTip="Start/Stop metronome" 
                                     HorizontalAlignment="Center" 
-                                    VerticalAlignment="Center"/>
+                                    VerticalAlignment="Center" />
                             </Grid>
                         </Border>
                     </ControlTemplate>
@@ -107,7 +107,10 @@
 
         </Grid>
         
-        <Expander Header="Volume / Bits per minute / Bits in a row" Foreground="White">
+        <Expander
+            Header="Volume / Bits per minute / Bits in a row" 
+            FontSize="{StaticResource Page.InputInformation.FontSize}"
+            Foreground="{StaticResource Page.Header.MainText.Brush}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

@@ -24,7 +24,7 @@
     <Color x:Key="Page.Header.OrdinaryText.Color">Black</Color>
     <SolidColorBrush x:Key="Page.Header.OrdinaryText.Brush" Color="{StaticResource Page.Header.OrdinaryText.Color}" />
 
-    <Color x:Key="Page.Header.MainText.Color">White</Color>
+    <Color x:Key="Page.Header.MainText.Color">LightGray</Color>
     <SolidColorBrush x:Key="Page.Header.MainText.Brush" Color="{StaticResource Page.Header.MainText.Color}" />
     
     <Color x:Key="Page.Header.OrdinaryPage.BackgroundColor">#fff2f2f2</Color>
@@ -128,6 +128,7 @@
     <Style x:Key="LeftBorder.MainMenuButton.ImageStyle" TargetType="Image">
         <Setter Property="Width" Value="24" />
         <Setter Property="Height" Value="24" />
+        <Setter Property="Opacity" Value="0.6" />
     </Style>
 
     <local:LeftBorderIsSelectedButtonConverter x:Key="LeftBorderIsSelectedButtonConverter" />
