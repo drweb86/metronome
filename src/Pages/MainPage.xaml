@@ -38,10 +38,13 @@
                                 <Style TargetType="Grid">
                                     <Setter Property="Background" Value="#3182a4" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=Value}" Value="True">
+                                        <DataTrigger Binding="{Binding Path=Item2}" Value="True">
                                             <Setter Property="Background" Value="#073642" />
                                         </DataTrigger>
-                                    </Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Item3}" Value="True">
+                                        <Setter Property="Background" Value="#1fa198" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                                 </Style>
                             </Grid.Style>
                             <Grid.ColumnDefinitions>
@@ -52,7 +55,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="50"
                                 Foreground="White"
-                                Text="{Binding Path=Key}"/>
+                                Text="{Binding Path=Item1}"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

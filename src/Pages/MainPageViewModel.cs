@@ -49,17 +49,25 @@ namespace Metronome.Pages
         {
             lock (_syncObject)
             {
+                int lastSelectedBit = -1;
+                for (int i = e.Mask.Length - 1; i >= 0; i--)
+                    if (e.Mask[i])
+                    {
+                        lastSelectedBit = i;
+                        break;
+                    }
+
                 if (ColorIndicators == null || e.Mask.Length != ColorIndicators.Count)
                 {
-                    var result = new List<KeyValuePair<int, bool>>();
+                    var result = new List<Tuple<int, bool, bool>>();
                     for (int i = 0; i < e.Mask.Length; i++)
-                        result.Add(new KeyValuePair<int, bool>(i + 1, e.Mask[i]));
+                        result.Add(new Tuple<int, bool, bool>(i + 1, e.Mask[i], lastSelectedBit == i));
 
-                    ColorIndicators = new ObservableCollection<KeyValuePair<int, bool>>(result);
+                    ColorIndicators = new ObservableCollection<Tuple<int, bool, bool>>(result);
                     return;
                 }
                 for (int i = 0; i < e.Mask.Length; i++)
-                    ColorIndicators[i] = new KeyValuePair<int, bool>(i + 1, e.Mask[i]);
+                    ColorIndicators[i] = new Tuple<int, bool, bool>(i + 1, e.Mask[i], lastSelectedBit == i);
             }
         }
 
@@ -117,11 +125,11 @@ namespace Metronome.Pages
         #region Color Indicators
 
         public static readonly DependencyProperty ColorIndicatorsProperty = DependencyProperty.Register(
-            "ColorIndicators", typeof (ObservableCollection<KeyValuePair<int, bool>>), typeof (MainPageViewModel), new PropertyMetadata(default(ObservableCollection<KeyValuePair<int, bool>>)));
+            "ColorIndicators", typeof (ObservableCollection<Tuple<int, bool, bool>>), typeof (MainPageViewModel), new PropertyMetadata(default(ObservableCollection<Tuple<int, bool, bool>>)));
 
-        public ObservableCollection<KeyValuePair<int, bool>> ColorIndicators
+        public ObservableCollection<Tuple<int, bool, bool>> ColorIndicators
         {
-            get { return (ObservableCollection<KeyValuePair<int, bool>>) GetValue(ColorIndicatorsProperty); }
+            get { return (ObservableCollection<Tuple<int, bool, bool>>) GetValue(ColorIndicatorsProperty); }
             set
             {
                 SetValue(ColorIndicatorsProperty, value); 
