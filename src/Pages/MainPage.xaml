@@ -50,7 +50,8 @@
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                FontSize="30" 
+                                FontSize="50"
+                                Foreground="White"
                                 Text="{Binding Path=Key}"/>
                         </Grid>
                     </DataTemplate>

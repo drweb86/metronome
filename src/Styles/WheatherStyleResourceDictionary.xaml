@@ -41,9 +41,6 @@
     <SolidColorBrush x:Key="Page.OrdinaryPage.Button.BorderBackground">#ff9e9e9e</SolidColorBrush>
     <SolidColorBrush x:Key="Page.OrdinaryPage.Button.Foreground">White</SolidColorBrush>
 
-    <SolidColorBrush x:Key="Page.Header.BackButton.HoverBackgroundBrush">#ffdadada</SolidColorBrush>
-    
-    
     <!-- Styles -->
     <Style x:Key="Page.ListBox.Style" TargetType="ListBox">
         <Setter Property="Foreground" Value="{StaticResource Page.OrdinaryPage.FontForeground}" />
@@ -141,7 +138,46 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="Page.Header.PanelStyle" TargetType="StackPanel">
+    <Style x:Key="Window.CloseButton.Style" TargetType="Button">
+        <Setter Property="FontSize" Value="{StaticResource Page.FontSize}" />
+        <Setter Property="Foreground" Value="{StaticResource Page.Header.OrdinaryText.Brush}" />
+        <Setter Property="Padding" Value="10 5 10 5" />
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border 
+                        MinWidth="{TemplateBinding MinWidth}"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Page.OrdinaryPage.Button.BorderBackground}" />
+                <Setter Property="Background" Value="OrangeRed" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Page.OrdinaryPage.Button.BorderBackground}" />
+                <Setter Property="Background" Value="OrangeRed" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <DataTrigger Binding="{Binding PageUri}" Value="{x:Static pages:PagesHelper.MainPageUri}">
+                <Setter Property="Foreground" Value="{StaticResource Page.Header.MainText.Brush}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Page.Header.PanelStyle" TargetType="Grid">
         <Setter Property="Background" Value="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding PageUri}" Value="{x:Static pages:PagesHelper.MainPageUri}">
@@ -202,47 +238,6 @@
                 </MultiDataTrigger.Conditions>
                 <MultiDataTrigger.Setters>
                     <Setter Property="Button.Background" Value="{StaticResource LeftBorder.MainMenuButton.Selected.BackgroundBrush}"/>
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style x:Key="Page.Header.BackButton.Style" TargetType="Button">
-        <Setter Property="Width" Value="48" />
-        <Setter Property="Height" Value="48" />
-        <Setter Property="DockPanel.Dock" Value="Top" />
-        <Setter Property="Background" Value="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource Page.Header.BackButton.HoverBackgroundBrush}"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource Page.Header.BackButton.HoverBackgroundBrush}"/>
-            </Trigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Value="True">
-                        <Condition.Binding>
-                            <MultiBinding Converter="{StaticResource LeftBorderIsSelectedButtonConverter}">
-                                <Binding Path="PageUri"/>
-                                <Binding RelativeSource="{RelativeSource Self}" Path="Tag" />
-                            </MultiBinding>
-                        </Condition.Binding>
-                    </Condition>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Button.Background" Value="{StaticResource Page.Header.MainPage.BackgroundBrush}"/>
-                    <Setter Property="Button.IsEnabled" Value="False"/>
                 </MultiDataTrigger.Setters>
             </MultiDataTrigger>
         </Style.Triggers>

@@ -9,7 +9,7 @@
         Title="Metronome#" MinHeight="350" MinWidth="650" Height="350" Width="650" Closed="OnClosed"
         WindowStartupLocation="CenterScreen"
         Icon="../Pictures/1453069499_Metronome.ico"
-        Style="{StaticResource CustomTitleBar}">
+        WindowStyle="None">
     <Window.DataContext>
         <windows:MainWindowViewModel />
     </Window.DataContext>
@@ -76,20 +76,26 @@
                        Margin="0 0 0 -1"
                        Background="{StaticResource LeftBorder.Spacer.BackgroundBrush}"/>
         </DockPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
-            Style="{StaticResource Page.Header.PanelStyle}">
-            <Button Style="{StaticResource Page.Header.BackButton.Style}"
-                    CommandParameter="{Binding}"  
-                    Command="{Binding NavigateToMainPageCommand}"
-                    Tag="{x:Static pages:PagesHelper.MainPageUri}">
-                <Image Source="../Pictures/1453488470_arrow-left.png" 
-                    ToolTip="Go to main page"
-                    Style="{StaticResource LeftBorder.MainMenuButton.ImageStyle}"/>
-            </Button>
-            <Label Content="{Binding ElementName=_frame, Path=Content.Title}" 
+        <Grid DockPanel.Dock="Top"
+            Style="{StaticResource Page.Header.PanelStyle}"
+            MouseDown="OnHeaderMouseDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="{Binding ElementName=_frame, Path=Content.Title}" 
                 Style="{StaticResource Page.Header.LabelStyle}" 
-                FontSize="{StaticResource Page.FontSize}" Margin="1 9 0 9" FontWeight="Bold"/>
-        </StackPanel>
+                FontSize="{StaticResource Page.FontSize}" Margin="15 9 0 9" FontWeight="Bold"/>
+            <Button Grid.Column="1" 
+                Padding="10 2 10 2"
+                CommandParameter="{Binding}"
+                Command="{Binding CloseMainWindowCommand}"
+                HorizontalContentAlignment="Right"
+                HorizontalAlignment="Right"
+                Style="{StaticResource Window.CloseButton.Style}">
+                    X
+            </Button>
+        </Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Frame x:Name="_frame"
                 Source="{Binding PageUri}" 

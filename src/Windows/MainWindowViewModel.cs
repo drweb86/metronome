@@ -41,6 +41,10 @@ namespace Metronome.Windows
 
         public ICommand CloseApplicationCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
             vm => vm.Controller.SaveSettings());
+
+        public ICommand CloseMainWindowCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
+           vm => Application.Current.MainWindow.Close());
+
         public ICommand NavigateToAboutPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
             vm => vm.PageUri = PagesHelper.AboutPageUri);
         public ICommand NavigateToAudioDevicePageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
