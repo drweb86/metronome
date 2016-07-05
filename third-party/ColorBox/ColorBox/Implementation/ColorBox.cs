@@ -376,7 +376,7 @@ namespace ColorBox
         }
         internal static readonly DependencyProperty BrushTypeProperty =
             DependencyProperty.Register("BrushType", typeof(BrushTypes), typeof(ColorBox),
-            new FrameworkPropertyMetadata(BrushTypes.None, new PropertyChangedCallback(BrushTypeChanged)));
+            new FrameworkPropertyMetadata(BrushTypes.Solid, new PropertyChangedCallback(BrushTypeChanged)));
         static void BrushTypeChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
         {
             ColorBox c = property as ColorBox;
@@ -423,7 +423,7 @@ namespace ColorBox
         {
             get
             {
-                BrushTypes temp = BrushTypes.None | BrushTypes.Solid | BrushTypes.Linear | BrushTypes.Radial;
+                BrushTypes temp = /*BrushTypes.None | */BrushTypes.Solid /*| BrushTypes.Linear | BrushTypes.Radial*/;
                 foreach (Enum value in Enum.GetValues(temp.GetType()))
                     if (temp.HasFlag(value))
                         yield return value;
@@ -449,44 +449,14 @@ namespace ColorBox
 
                 if (brush == null)
                 {
-                    c.BrushType = BrushTypes.None;
+                    c.BrushType = BrushTypes.Solid;
                 }
                 else if (brush is SolidColorBrush)
                 {
                     c.BrushType = BrushTypes.Solid;
                     c.Color = (brush as SolidColorBrush).Color;
                 }
-                else if (brush is LinearGradientBrush)
-                {
-                    LinearGradientBrush lgb = brush as LinearGradientBrush;
-                    //c.Opacity = lgb.Opacity;
-                    c.StartX = lgb.StartPoint.X;
-                    c.StartY = lgb.StartPoint.Y;
-                    c.EndX = lgb.EndPoint.X;
-                    c.EndY = lgb.EndPoint.Y;
-                    c.MappingMode = lgb.MappingMode;
-                    c.SpreadMethod = lgb.SpreadMethod;                       
-                    c.Gradients = new ObservableCollection<GradientStop>(lgb.GradientStops);
-                    c.BrushType = BrushTypes.Linear;
-                    //c.Color = lgb.GradientStops.OrderBy(x => x.Offset).Last().Color;
-                    //c.SelectedGradient = lgb.GradientStops.OrderBy(x => x.Offset).Last();
-                }
-                else
-                {
-                    RadialGradientBrush rgb = brush as RadialGradientBrush;
-                    c.GradientOriginX = rgb.GradientOrigin.X;
-                    c.GradientOriginY = rgb.GradientOrigin.Y;
-                    c.RadiusX = rgb.RadiusX;
-                    c.RadiusY = rgb.RadiusY;
-                    c.CenterX = rgb.Center.X;
-                    c.CenterY = rgb.Center.Y;
-                    c.MappingMode = rgb.MappingMode;
-                    c.SpreadMethod = rgb.SpreadMethod;
-                    c.Gradients = new ObservableCollection<GradientStop>(rgb.GradientStops);
-                    c.BrushType = BrushTypes.Radial;
-                    //c.Color = rgb.GradientStops.OrderBy(x => x.Offset).Last().Color;
-                    //c.SelectedGradient = rgb.GradientStops.OrderBy(x => x.Offset).Last();
-                }
+
 
                 c._BrushTypeSetInternally = false;
             }
@@ -746,48 +716,14 @@ namespace ColorBox
 
             switch (BrushType)
             {
-                case BrushTypes.None: Brush = null; break;
-
                 case BrushTypes.Solid:
                     
                     Brush = new SolidColorBrush(this.Color);
 
                     break;
 
-                case BrushTypes.Linear:
-
-                    var brush = new LinearGradientBrush();                    
-                    foreach (GradientStop g in Gradients)
-                    {
-                        brush.GradientStops.Add(new GradientStop(g.Color, g.Offset));
-                    }
-                    brush.StartPoint = new Point(this.StartX, this.StartY);
-                    brush.EndPoint = new Point(this.EndX, this.EndY);
-                    brush.MappingMode = this.MappingMode;
-                    brush.SpreadMethod = this.SpreadMethod;
-                    Brush = brush;
-                    
-                    break;
-
-                case BrushTypes.Radial:
-
-                    var brush1 = new RadialGradientBrush();                   
-                    foreach (GradientStop g in Gradients)
-                    {
-                        brush1.GradientStops.Add(new GradientStop(g.Color, g.Offset));
-                    }
-                    brush1.GradientOrigin = new Point(this.GradientOriginX, this.GradientOriginY);
-                    brush1.Center = new Point(this.CenterX, this.CenterY);
-                    brush1.RadiusX = this.RadiusX;
-                    brush1.RadiusY = this.RadiusY;
-                    brush1.MappingMode = this.MappingMode;
-                    brush1.SpreadMethod = this.SpreadMethod;
-                    Brush = brush1;
-
-                    break;
             }
 
-            if (this.BrushType != BrushTypes.None)
             {
                 this.Brush.Opacity = opacity;  // retain old opacity
                 if (tempTG != null)

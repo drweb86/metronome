@@ -15,9 +15,6 @@ namespace ColorBox
 {
     internal enum BrushTypes
     {
-        None,
         Solid,
-        Linear,
-        Radial
     }
 }
