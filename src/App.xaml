@@ -3,6 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="Windows/MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Window" x:Key="CustomTitleBar">
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="{x:Static SystemParameters.CaptionHeight}" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Window">
+                        <DockPanel LastChildFill="True">
+                            <Border 
+                                Background="#1b1b1b" DockPanel.Dock="Top" 
+                                Height="{x:Static SystemParameters.CaptionHeight}" x:Name="titlebar">
+                                <Grid>
+                                    <TextBlock Text="{TemplateBinding Title}" 
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Foreground="LightGray">
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter/>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>

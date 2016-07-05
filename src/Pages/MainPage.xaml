@@ -22,13 +22,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <StackPanel Margin="20 5 20 5">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <ItemsControl Grid.Column="0" VerticalAlignment="Center" Margin="0 20 0 20"
+        <ItemsControl Grid.Column="0" VerticalAlignment="Center" Margin="0 20 0 20"
                           ItemsSource="{Binding ColorIndicators}"
                          >
                 <ItemsControl.ItemsPanel>
@@ -62,52 +56,8 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-
-            <Button Grid.Column="1"
-                    Margin="50 50 50 50"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="120"
-                    Height="120"
-                    Focusable="False"
-                    CommandParameter="{Binding}"
-                    Command="{Binding ExecuteMetronomeAsyncCommand}" 
-                    IsEnabled="{Binding StartMetronomeButtonEnabled}">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" BorderThickness="2" 
-                            ToolTip="Start/Stop metronome">
-                            <Grid>
-                                <Ellipse />
-                                <Image 
-                                    Opacity="0.6"
-                                    Source="{Binding StartMetronomeButtonImageUri}" 
-                                    ToolTip="Start/Stop metronome" 
-                                    HorizontalAlignment="Center" 
-                                    VerticalAlignment="Center" />
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Opacity" Value="0.8" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="1" />
-                            </Trigger>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="Opacity" Value="1" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                
-                </Button.Style>
-            </Button>
-
-        </Grid>
         
-        <Expander
+        <Expander Margin="0 5 0 10"
             Header="Volume / Bits per minute / Bits in a row" 
             FontSize="{StaticResource Page.InputInformation.FontSize}"
             Foreground="{StaticResource Page.Header.MainText.Brush}">
@@ -186,5 +136,13 @@
                        ToolTip="Bits per minute" />
             </Grid>
         </Expander>
+
+        <Button Style="{StaticResource Page.MainPage.Button.Style}" 
+                HorizontalAlignment="Left" 
+                HorizontalContentAlignment="Left"
+                CommandParameter="{Binding}"
+                Command="{Binding ExecuteMetronomeAsyncCommand}" 
+                IsEnabled="{Binding StartMetronomeButtonEnabled}"
+                Content="{Binding StartMetronomeButtonText}" />
     </StackPanel>
 </Page>

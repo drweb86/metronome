@@ -158,12 +158,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\1452993892_player_play.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Pictures\1452994197_player_stop.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Pictures\1452998965_volume-70px.png" />
   </ItemGroup>
   <ItemGroup>

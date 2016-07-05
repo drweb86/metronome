@@ -32,9 +32,9 @@ namespace Metronome.Pages
 
             BitsPerMinute = Controller.Model.BitsPerMinute;
             Volume = Controller.Model.Volume;
-            StartMetronomeButtonImageUri = Controller.MetronomeService.IsRunning
-                ? PicturesHelper.GetStop()
-                : PicturesHelper.GetStart();
+            StartMetronomeButtonText = Controller.MetronomeService.IsRunning
+                ? "Stop metronome"
+                : "Start metronome";
             BitsSequenceLength = Controller.Model.BitsSequenceLength;
 
             //TODO: there will be a memory leak, because VM is created twice for some reason.
@@ -174,15 +174,15 @@ namespace Metronome.Pages
 
         #region Start Metronome Button Text
 
-        public static readonly DependencyProperty StartMetronomeButtonImageUriProperty = DependencyProperty.Register(
-            "StartMetronomeButtonStartMetronomeButtonImageUri", typeof(string), typeof(MainPageViewModel));
+        public static readonly DependencyProperty StartMetronomeButtonTextProperty = DependencyProperty.Register(
+            "StartMetronomeButtonText", typeof(string), typeof(MainPageViewModel));
 
-        public string StartMetronomeButtonImageUri
+        public string StartMetronomeButtonText
         {
-            get { return (string)GetValue(StartMetronomeButtonImageUriProperty); }
+            get { return (string)GetValue(StartMetronomeButtonTextProperty); }
             set
             {
-                SetValue(StartMetronomeButtonImageUriProperty, value);
+                SetValue(StartMetronomeButtonTextProperty, value);
                 OnPropertyChanged();
             }
         }
@@ -206,12 +206,12 @@ namespace Metronome.Pages
             if (Controller.MetronomeService.IsRunning)
             {
                 Controller.StopMetronomeSounds();
-                StartMetronomeButtonImageUri = PicturesHelper.GetStart(); 
+                StartMetronomeButtonText = "Start metronome"; 
             }
             else
             {
                 Controller.ProduceMetronomeSounds();
-                StartMetronomeButtonImageUri = PicturesHelper.GetStop();
+                StartMetronomeButtonText = "Stop metronome";
             }
             StartMetronomeButtonEnabled = true;
         }

@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="Metronome#" MinHeight="350" MinWidth="650" Height="350" Width="650" Closed="OnClosed"
         WindowStartupLocation="CenterScreen"
-        Icon="../Pictures/1453069499_Metronome.ico">
+        Icon="../Pictures/1453069499_Metronome.ico"
+        Style="{StaticResource CustomTitleBar}">
     <Window.DataContext>
         <windows:MainWindowViewModel />
     </Window.DataContext>
