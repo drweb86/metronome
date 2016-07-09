@@ -54,9 +54,14 @@ namespace Metronome
             Model.BitsSequenceLength = value;
         }
 
-        public void ChangeSelectedTickSoundFile(string selectedTickSoundFile)
+        public void ChangeBeatSound(string soundFile)
         {
-            Model.SelectedTickSoundFile = selectedTickSoundFile;
+            Model.BeatSound = soundFile;
+        }
+
+        public void ChangeAccentedBeatSound(string soundFile)
+        {
+            Model.AccentedBeatSound = soundFile;
         }
 
         public void LoadAvailableMusic()
@@ -70,7 +75,7 @@ namespace Metronome
             if (!Model.TickSoundFiles.Any())
                 throw new InvalidDataException("Can't find any tick track");
 
-            Model.SelectedTickSoundFile = Model.TickSoundFiles.First();
+            Model.BeatSound = Model.TickSoundFiles.First();
         }
 
         public void LoadAvailableSoundDevices()
@@ -114,10 +119,10 @@ namespace Metronome
                 .Stop();
         }
 
-        public void TestSound()
+        public void TestSound(bool accented)
         {
             MetronomeService
-                .Test();
+                .Test(accented);
         }
 
         private SettingsService<MetronomeSettings> GetSettingsService()

@@ -211,13 +211,15 @@ namespace Metronome.Pages
         #region Commands
 
         public ICommand CheckSettingsChangeCommand { get; } = new ViewModelActionCommand<MainPageViewModel>(
-            vm => Task.Run(() => vm.Controller.TestSound()));
+            vm => Task.Run(() => vm.Controller.TestSound(false)));
 
         public ICommand ExecuteMetronomeAsyncCommand { get; } = new ViewModelActionCommand<MainPageViewModel>(vm => vm.StartOrStopMetronome());
 
         private void StartOrStopMetronome()
         {
-            if (string.IsNullOrWhiteSpace(Controller.Model.SelectedTickSoundFile))
+            if (string.IsNullOrWhiteSpace(Controller.Model.BeatSound))
+                return;
+            if (string.IsNullOrWhiteSpace(Controller.Model.AccentedBeatSound))
                 return;
 
             StartMetronomeButtonEnabled = false;

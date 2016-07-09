@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 
 namespace Metronome.Services
 {
@@ -43,15 +44,14 @@ namespace Metronome.Services
 
         public static bool IsColorValid(string color)
         {
-            if (string.IsNullOrWhiteSpace(color))
-                return false;
-
-
-            return true; //TODO:
+            return
+                !string.IsNullOrWhiteSpace(color) &&
+                ColorConverter.ConvertFromString(color) != null;
         }
 
         public MetronomeSettings(
-            string selectedTickSoundFile,
+            string beatSound,
+            string accentedBeatSound,
             string selectedMultimediaDeviceFriendlyName,
             double volume,
             int bitsPerMinute,
@@ -78,7 +78,9 @@ namespace Metronome.Services
             if (!IsColorValid(beatSquareColor))
                 throw new ArgumentOutOfRangeException(nameof(beatSquareColor));
 
-            SelectedTickSoundFile = selectedTickSoundFile;
+            BeatSound = beatSound;
+            AccentedBeatSound = accentedBeatSound;
+
             SelectedMultimediaDeviceFriendlyName = selectedMultimediaDeviceFriendlyName;
             Volume = volume;
             BitsPerMinute = bitsPerMinute;
@@ -100,7 +102,8 @@ namespace Metronome.Services
         public string PassedBeatSquareColor { get; set; }
         public string BeatSquareColor { get; set; }
 
-        public string SelectedTickSoundFile { get; set; }
+        public string BeatSound { get; set; }
+        public string AccentedBeatSound { get; set; }
         public string SelectedMultimediaDeviceFriendlyName { get; set; }
         public double Volume { get; set; }
         public int BitsPerMinute { get; set; }
@@ -110,7 +113,8 @@ namespace Metronome.Services
         public bool Equals(MetronomeSettings other)
         {
             return 
-                SelectedTickSoundFile == other.SelectedTickSoundFile &&
+                BeatSound == other.BeatSound &&
+                AccentedBeatSound == other.AccentedBeatSound &&
                 SelectedMultimediaDeviceFriendlyName == other.SelectedMultimediaDeviceFriendlyName &&
                 Math.Abs(Volume - other.Volume) < 0.001 &&
                 BitsPerMinute == other.BitsPerMinute &&

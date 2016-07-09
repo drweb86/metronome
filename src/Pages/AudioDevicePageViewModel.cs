@@ -50,7 +50,7 @@ namespace Metronome.Pages
             if (viewModel._initialized)
             {
                 Controller.Instance.Model.SelectedMultimediaDeviceFriendlyName = (string)e.NewValue;
-                Task.Run(() => Controller.Instance.TestSound());
+                Task.Run(() => Controller.Instance.TestSound(false));
             }
         }
 
@@ -114,7 +114,7 @@ namespace Metronome.Pages
 
         public ICommand RefreshMultimediaDevicesCommand { get; } = new RefreshMultimediaDevicesActionCommand();
         public ICommand TestSoundCommand { get; } = new ViewModelActionCommand<AudioDevicePageViewModel>(
-            vm => Task.Run(() => Controller.Instance.TestSound()),
+            vm => Task.Run(() => Controller.Instance.TestSound(false)),
             vm => true);
 
         #endregion

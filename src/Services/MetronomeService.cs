@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -77,19 +76,8 @@ namespace Metronome.Services
                 _colorIndicatorService.Reset(settings.BitsSequenceLength);
 
                 // Tick tock files
-                var tickTockFiles = GetTickTockFiles(settings);
-                if (tickTockFiles.Count == 0)
-                {
-                    _log.Error("List of audio files is empty.");
-                    return;
-                }
-                if (tickTockFiles.Count > 2)
-                {
-                    _log.Warning("Only first and last files will be used.");
-                }
-
-                var firstPlayingContent = ToPlayingContent(device, settings, tickTockFiles.First());
-                var lastPlayingContent = ToPlayingContent(device, settings, tickTockFiles.Last());
+                var firstPlayingContent = ToPlayingContent(device, settings, settings.BeatSound);
+                var lastPlayingContent = ToPlayingContent(device, settings, settings.AccentedBeatSound);
 
                 while (!_isCancellationRequested &&
                        _getSettings().Equals(settings))
@@ -97,7 +85,7 @@ namespace Metronome.Services
                     bool isLast;
                     _colorIndicatorService.Bit(out isLast);
 
-                    var playingContent = isLast ? firstPlayingContent : lastPlayingContent;
+                    var playingContent = isLast ? lastPlayingContent: firstPlayingContent;
 
                     playingContent.Item2.Seek(0, SeekOrigin.Begin);
                     playingContent.Item1.Play();
@@ -125,21 +113,6 @@ namespace Metronome.Services
                 volumeStream);
         }
 
-        private static List<string> GetTickTockFiles(MetronomeSettings settings) // we support tick-tocks which contains of 2 files
-        {
-            var result = new List<string>();
-            result.Add(settings.SelectedTickSoundFile);
-            var pairFile = settings.SelectedTickSoundFile.Contains("-TICK")
-               ? settings.SelectedTickSoundFile.Replace("-TICK", "-TOCK")
-               : settings.SelectedTickSoundFile.Replace("-TOCK", "-TICK");
-
-            if (File.Exists(pairFile))
-            {
-                result.Add(pairFile);
-            }
-            return result;
-        }
-
         private static void DisposePlayingContent(Tuple<WasapiOut, WaveStream, WaveChannel32> content)
         {
             content.Item3.Dispose();
@@ -158,7 +131,7 @@ namespace Metronome.Services
                 enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
         }
 
-        public void Test()
+        public void Test(bool checkAccentedSound)
         {
             // we should not run neither produce test sounds while metronome is active.
             if (IsRunning)
@@ -169,7 +142,7 @@ namespace Metronome.Services
             var device = GetDevice(settings);
 
             using (WasapiOut player = new WasapiOut(device, AudioClientShareMode.Shared, false, settings.LatencyMseconds))
-            using (WaveStream mainOutputStream = FileReaderFactory.Create(settings.SelectedTickSoundFile))
+            using (WaveStream mainOutputStream = FileReaderFactory.Create(checkAccentedSound ? settings.AccentedBeatSound : settings.BeatSound))
             using (WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream))
             {
                 player.Init(volumeStream);

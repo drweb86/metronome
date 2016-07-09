@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
-using HDE.Platform.Wpf.Commands;
 using Metronome.Annotations;
-using Metronome.Commands;
 
 namespace Metronome.Pages
 {
@@ -23,7 +17,8 @@ namespace Metronome.Pages
             try
             {
                 TickSoundFiles = Controller.Model.TickSoundFiles;
-                SelectedTickSoundFile = Controller.Model.SelectedTickSoundFile;
+                BeatSound = Controller.Model.BeatSound;
+                AccentedBeatSound = Controller.Model.AccentedBeatSound;
             }
             finally
             {
@@ -59,41 +54,55 @@ namespace Metronome.Pages
 
         #region Selected Tick Sound File
 
-        public static readonly DependencyProperty SelectedTickSoundFileProperty = DependencyProperty.Register(
-            "SelectedTickSoundFile", typeof(string), typeof(AudioFilesPageViewModel),
-            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectTickSound));
+        public static readonly DependencyProperty BeatSoundProperty = DependencyProperty.Register(
+            "BeatSound", typeof(string), typeof(AudioFilesPageViewModel),
+            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnChangeBeatSound));
 
-        private static void OnSelectTickSound(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnChangeBeatSound(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = ((AudioFilesPageViewModel)d);
             if (viewModel._initialized)
             {
-                viewModel.Controller.ChangeSelectedTickSoundFile((string)e.NewValue);
-                if (viewModel.TestSoundCommand.CanExecute(viewModel))
-                {
-                    viewModel.TestSoundCommand.Execute(viewModel);
-                }
+                viewModel.Controller.ChangeBeatSound((string)e.NewValue);
+                Task.Run(() => Controller.Instance.TestSound(false));
             }
         }
 
-        public string SelectedTickSoundFile
+        public string BeatSound
         {
-            get { return (string)GetValue(SelectedTickSoundFileProperty); }
+            get { return (string)GetValue(BeatSoundProperty); }
             set
             {
-                SetValue(SelectedTickSoundFileProperty, value);
+                SetValue(BeatSoundProperty, value);
                 OnPropertyChanged();
             }
         }
 
-        #endregion
 
+        public static readonly DependencyProperty AccentedBeatSoundProperty = DependencyProperty.Register(
+            "AccentedBeatSound", typeof(string), typeof(AudioFilesPageViewModel),
+            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnChangeAccentedBeatSound));
 
-        #region Commands
+        private static void OnChangeAccentedBeatSound(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            
+            var viewModel = ((AudioFilesPageViewModel)d);
+            if (viewModel._initialized)
+            {
+                viewModel.Controller.ChangeAccentedBeatSound((string)e.NewValue);
+                Task.Run(() => Controller.Instance.TestSound(true));
+            }
+        }
 
-        public ICommand TestSoundCommand { get; } = new ViewModelActionCommand<AudioFilesPageViewModel>(
-            vm => Task.Run(() => Controller.Instance.TestSound()),
-            vm => true);
+        public string AccentedBeatSound
+        {
+            get { return (string)GetValue(AccentedBeatSoundProperty); }
+            set
+            {
+                SetValue(AccentedBeatSoundProperty, value);
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
     }

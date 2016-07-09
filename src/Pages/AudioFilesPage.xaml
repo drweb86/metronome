@@ -20,16 +20,44 @@
         </ResourceDictionary>
     </Page.Resources>
     <StackPanel Background="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}">
-        <Label Style="{StaticResource Page.InputPrompt.Label.Style}">Tick-Tock sound file</Label>
+        <Label Style="{StaticResource Page.InputPrompt.Label.Style}">Beat sound file</Label>
         <Label Style="{StaticResource Page.InputInformation.Label.Style}">
             <TextBlock TextWrapping="WrapWithOverflow" Width="500" >
-                    You can select tick-tock file in the list below. If tick or tock file has corresponding pair file, they will be used both (one file for tick sound and its pair for tock sound).
+                    You can select beat file from the list below.
             </TextBlock>
         </Label>
         <ListBox Margin="32 11 20 20"
             Style="{StaticResource Page.ListBox.Style}"
             ItemsSource="{Binding TickSoundFiles}"
-            SelectedItem="{Binding SelectedTickSoundFile, Mode=TwoWay}">
+            SelectedItem="{Binding BeatSound, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Width="16" Height="16" Grid.Column="0" Source="../Pictures/1453073705_music-note-sound.png" />
+                        <Label 
+                            Foreground="{StaticResource Page.OrdinaryPage.FontForeground}" 
+                            FontSize="{StaticResource Page.FontSize}"
+                            Grid.Column="1" Content="{Binding Converter={StaticResource TicksFileNameStripperConverter}}" VerticalAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <Label Style="{StaticResource Page.InputPrompt.Label.Style}">Accented Beat Sound File</Label>
+        <Label Style="{StaticResource Page.InputInformation.Label.Style}">
+            <TextBlock TextWrapping="WrapWithOverflow" Width="500" >
+                    You can select there accented beat sound file. This file will be played if you set more then one beat in a row on a main page of an application.
+            </TextBlock>
+        </Label>
+        <ListBox Margin="32 11 20 20"
+            Style="{StaticResource Page.ListBox.Style}"
+            ItemsSource="{Binding TickSoundFiles}"
+            SelectedItem="{Binding AccentedBeatSound, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>

@@ -180,6 +180,44 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="Window.MaxMinButton.Style" TargetType="Button">
+        <Setter Property="FontSize" Value="{StaticResource Page.FontSize}" />
+        <Setter Property="Foreground" Value="{StaticResource Page.Header.OrdinaryText.Brush}" />
+        <Setter Property="Padding" Value="10 5 10 5" />
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border 
+                        MinWidth="{TemplateBinding MinWidth}"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Page.OrdinaryPage.Button.BorderBackground}" />
+                <Setter Property="Background" Value="SlateGray" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Page.OrdinaryPage.Button.BorderBackground}" />
+                <Setter Property="Background" Value="SlateGray" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <DataTrigger Binding="{Binding PageUri}" Value="{x:Static pages:PagesHelper.MainPageUri}">
+                <Setter Property="Foreground" Value="{StaticResource Page.Header.MainText.Brush}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 
     <Style x:Key="Page.Header.PanelStyle" TargetType="Grid">
         <Setter Property="Background" Value="{StaticResource Page.Header.OrdinaryPage.BackgroundBrush}" />

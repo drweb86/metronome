@@ -14,6 +14,6 @@ namespace Metronome.Services
         /// </summary>
         void Stop();
 
-        void Test();
+        void Test(bool checkAccentedSound);
     }
 }

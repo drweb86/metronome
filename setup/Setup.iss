@@ -1,5 +1,5 @@
 #define MyAppName "Metronome#"
-#define MyAppVersion "1.2"
+#define MyAppVersion "1.3"
 #define MyAppPublisher "Siarhei Kuchuk"
 #define MyAppURL "https://metronomesharp.codeplex.com"
 #define MyAppExeName "Metronome.exe"

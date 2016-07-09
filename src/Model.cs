@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Metronome.Services;
 
 namespace Metronome
@@ -7,7 +8,8 @@ namespace Metronome
     internal class Model
     {
         public IEnumerable<string> TickSoundFiles { get; set; }
-        public string SelectedTickSoundFile { get; set; }
+        public string BeatSound { get; set; }
+        public string AccentedBeatSound { get; set; }
 
         public IEnumerable<string> MultimediaDevicesFriendlyNames { get; set; }
         public string SelectedMultimediaDeviceFriendlyName { get; set; }
@@ -106,7 +108,9 @@ namespace Metronome
         public MetronomeSettings ToSettings()
         {
             return new MetronomeSettings(
-                SelectedTickSoundFile,
+                BeatSound,
+                AccentedBeatSound,
+
                 SelectedMultimediaDeviceFriendlyName,
                 Volume,
                 BitsPerMinute,
@@ -121,19 +125,20 @@ namespace Metronome
 
         public void FromSettings(MetronomeSettings settings)
         {
-            SelectedTickSoundFile = settings.SelectedTickSoundFile;
             SelectedMultimediaDeviceFriendlyName = settings.SelectedMultimediaDeviceFriendlyName;
             Volume = MetronomeSettings.IsVolumeValid(settings.Volume) ? settings.Volume: MetronomeSettings.DefaultVolume;
             LatencyMseconds = settings.LatencyMseconds;
 
-            // Support legacy configs v.1.1
+            // Support legacy configs of v.1.1
             BitsPerMinute = MetronomeSettings.IsBitsPerMinuteValid(settings.BitsPerMinute) ? settings.BitsPerMinute : MetronomeSettings.DefaultBitsPerMinute;
             BitsSequenceLength = MetronomeSettings.IsBitsSequenceLength(settings.BitsSequenceLength) ? settings.BitsSequenceLength : MetronomeSettings.DefaultBitsSequenceLength;
-            // Support legacy configs v.1.2
+            // Support legacy configs of v.1.2
             BeatTextColor = MetronomeSettings.IsColorValid(settings.BeatTextColor) ? settings.BeatTextColor : MetronomeSettings.DefaultBeatTextColor;
             JustBeatedSquareColor = MetronomeSettings.IsColorValid(settings.JustBeatedSquareColor) ? settings.JustBeatedSquareColor : MetronomeSettings.DefaultJustBeatedSquareColor;
             PassedBeatSquareColor = MetronomeSettings.IsColorValid(settings.PassedBeatSquareColor) ? settings.PassedBeatSquareColor : MetronomeSettings.DefaultPassedBeatSquareColor;
             DefaultBeatSquareColor = MetronomeSettings.IsColorValid(settings.BeatSquareColor) ? settings.BeatSquareColor : MetronomeSettings.DefaultBeatSquareColor;
+            BeatSound = !string.IsNullOrWhiteSpace(settings.BeatSound) ? settings.BeatSound : TickSoundFiles.FirstOrDefault();
+            AccentedBeatSound = !string.IsNullOrWhiteSpace(settings.AccentedBeatSound) ? settings.AccentedBeatSound : TickSoundFiles.FirstOrDefault();
         }
     }
 }
