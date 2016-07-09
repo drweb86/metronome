@@ -22,7 +22,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <StackPanel Margin="20 5 20 5">
-        <ItemsControl Grid.Column="0" VerticalAlignment="Center" Margin="0 20 0 20"
+        <ItemsControl VerticalAlignment="Center" Margin="0 20 0 20"
                           ItemsSource="{Binding ColorIndicators}"
                          >
                 <ItemsControl.ItemsPanel>
@@ -34,19 +34,9 @@
                     <DataTemplate>
                         <!--GreenYellow Green -->
                         <Grid Margin="0,0,5,5" Height="120">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="#3182a4" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=Item2}" Value="True">
-                                            <Setter Property="Background" Value="#073642" />
-                                        </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=Item3}" Value="True">
-                                        <Setter Property="Background" Value="#1fa198" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
+                            <Grid.Background>
+                                <SolidColorBrush Color="{Binding Path=Item3, Converter={StaticResource StringToColorConverter}}"></SolidColorBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
@@ -54,15 +44,18 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 FontSize="50"
-                                Foreground="White"
-                                Text="{Binding Path=Item1}"/>
+                                Text="{Binding Path=Item1}">
+                                <TextBlock.Foreground>
+                                    <SolidColorBrush Color="{Binding Path=Item2, Converter={StaticResource StringToColorConverter}}"></SolidColorBrush>
+                                </TextBlock.Foreground>
+                            </TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         
         <Expander Margin="0 5 0 10"
-            Header="Volume / Bits per minute / Bits in a row" 
+            Header="Volume / Beats per minute / Beats in a row" 
             FontSize="{StaticResource Page.InputInformation.FontSize}"
             Foreground="{StaticResource Page.Header.MainText.Brush}">
             <Grid>
@@ -86,12 +79,12 @@
                        Content="{Binding BitsPerMinute, Mode=OneWay}"  
                        Style="{StaticResource Page.MainPage.Label.Style}" 
                        VerticalAlignment="Center"
-                       ToolTip="Bits per minute"/>
+                       ToolTip="Beats per minute"/>
                 <Label Grid.Row="2" Grid.Column="2"  
                        Content="{Binding BitsSequenceLength, Mode=OneWay}"  
                        Style="{StaticResource Page.MainPage.Label.Style}" 
                        VerticalAlignment="Center"
-                       ToolTip="Amount of bits in a row"/>
+                       ToolTip="Amount of Beats in a row"/>
                 
                 <Image Grid.Row="0" Grid.Column="0" 
                        VerticalAlignment="Center"
@@ -102,12 +95,12 @@
                        VerticalAlignment="Center"
                        Width="32" Height="32" 
                        Source="../Pictures/1452999134_Personal_trainer_1.png" 
-                       ToolTip="Bits per minute"/>
+                       ToolTip="Beats per minute"/>
                 <Image Grid.Row="2" Grid.Column="0"
                        VerticalAlignment="Center"
                        Width="32" Height="32" 
                        Source="../Pictures/ColorWheel_16x.png" 
-                       ToolTip="Amount of bits in a row"/>
+                       ToolTip="Amount of beats in a row"/>
                 
                 <Slider
                         VerticalAlignment="Center" 
@@ -122,14 +115,14 @@
                         Value="{Binding BitsPerMinute}" 
                         Minimum="{Binding MinimumBitsPerMinute}" 
                         Maximum="{Binding MaximumBitsPerMinute}" 
-                        ToolTip="Bits per minute"/>
+                        ToolTip="Beats per minute"/>
                 <Slider
                     VerticalAlignment="Center" 
                     Grid.Row="2" Grid.Column="1"  
                     Value="{Binding BitsSequenceLength}" 
                     Minimum="{Binding MinimumBitsSequenceLength}" 
                     Maximum="{Binding MaximumBitsSequenceLength}" 
-                    ToolTip="Amount of bits in a row"/>
+                    ToolTip="Amount of beats in a row"/>
                 
                 <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
                        Content="{Binding BitsPerMinute, Mode=OneWay, Converter={StaticResource BitsPerMinuteConverter}}"  
@@ -137,7 +130,7 @@
                        VerticalAlignment="Center"
                        VerticalContentAlignment="Center"
                        HorizontalContentAlignment="Center"
-                       ToolTip="Bits per minute" />
+                       ToolTip="Beats per minute" />
             </Grid>
         </Expander>
 

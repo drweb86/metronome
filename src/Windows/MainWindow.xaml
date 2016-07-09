@@ -57,6 +57,15 @@
                     ToolTip="Selects audio device"
                     Style="{StaticResource LeftBorder.MainMenuButton.ImageStyle}"/>
             </Button>
+            
+            <Button Style="{StaticResource LeftBorder.MainMenuButton.Style}"
+                CommandParameter="{Binding}"  
+                Command="{Binding NavigateToColorsPageCommand}"
+                Tag="{x:Static pages:PagesHelper.ColorsPageUri}">
+                <Image Source="../Pictures/1467754721_color-palette_sticker.png" 
+                    ToolTip="Selects colors settings"
+                    Style="{StaticResource LeftBorder.MainMenuButton.ImageStyle}"/>
+            </Button>
 
             <Button
                     Style="{StaticResource LeftBorder.MainMenuButton.Style}"
@@ -87,11 +96,13 @@
                 Style="{StaticResource Page.Header.LabelStyle}" 
                 FontSize="{StaticResource Page.FontSize}" Margin="15 9 0 9" FontWeight="Bold"/>
             <Button Grid.Column="1" 
-                Padding="10 2 10 2"
+                Padding="19 3 19 3"
                 CommandParameter="{Binding}"
                 Command="{Binding CloseMainWindowCommand}"
                 HorizontalContentAlignment="Right"
                 HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                VerticalContentAlignment="Top"
                 Style="{StaticResource Window.CloseButton.Style}">
                     X
             </Button>

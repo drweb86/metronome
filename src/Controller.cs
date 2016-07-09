@@ -143,5 +143,25 @@ namespace Metronome
             if (!settings.Equals(new MetronomeSettings())) // first run or settings are corrupted
                 Model.FromSettings(settings);
         }
+
+        public void ChangeDefaultBeatSquareColor(string newColor)
+        {
+            Model.DefaultBeatSquareColor = newColor;
+        }
+
+        public void ChangePassedBeatSquareColor(string newColor)
+        {
+            Model.PassedBeatSquareColor = newColor;
+        }
+
+        public void ChangeJustBeatedSquareColor(string newColor)
+        {
+            Model.JustBeatedSquareColor = newColor;
+        }
+
+        public void ChangeBeatTextColor(string newColor)
+        {
+            Model.BeatTextColor = newColor;
+        }
     }
 }

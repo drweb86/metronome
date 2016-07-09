@@ -2,7 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Metronome.Styles"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:pages="clr-namespace:Metronome.Pages">
+                    xmlns:pages="clr-namespace:Metronome.Pages"
+                    xmlns:ncore="http://schemas.ncore.com/wpf/xaml/colorbox"
+                    xmlns:converters="clr-namespace:Metronome.Converters">
     <Color x:Key="LeftBorder.BackgroundColor">#FF2b2b2b</Color>
     <SolidColorBrush x:Key="LeftBorder.BackgroundBrush" Color="{StaticResource LeftBorder.BackgroundColor}" />
 
@@ -59,7 +61,9 @@
         <Setter Property="FontSize" Value="{StaticResource Page.InputInformation.FontSize}" />
         <Setter Property="Margin" Value="32 11 0 0" />
     </Style>
-
+    <Style x:Key="Page.ColorBox.Style" TargetType="ncore:ColorBox">
+        <Setter Property="Margin" Value="32 11 20 0" />
+    </Style>
     <Style x:Key="Page.Label.Style" TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource Page.OrdinaryPage.FontForeground}" />
         <Setter Property="FontSize" Value="{StaticResource Page.FontSize}" />
@@ -202,6 +206,7 @@
     </Style>
 
     <local:LeftBorderIsSelectedButtonConverter x:Key="LeftBorderIsSelectedButtonConverter" />
+    <converters:StringToColorConverter x:Key="StringToColorConverter" />
     <Style x:Key="LeftBorder.MainMenuButton.Style" TargetType="Button">
         <Setter Property="Width" Value="48" />
         <Setter Property="Height" Value="48" />

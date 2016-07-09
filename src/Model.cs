@@ -50,6 +50,55 @@ namespace Metronome
             }
         }
 
+        private string _beatTextColor;
+        public string BeatTextColor
+        {
+            get { return _beatTextColor; }
+            set
+            {
+                if (!MetronomeSettings.IsColorValid(value))
+                    throw new ArgumentOutOfRangeException(nameof(BeatTextColor));
+
+                _beatTextColor = value;
+            }
+        }
+
+        private string _justBeatedSquareColor;
+        public string JustBeatedSquareColor
+        {
+            get { return _justBeatedSquareColor; }
+            set {
+                if (!MetronomeSettings.IsColorValid(value))
+                    throw new ArgumentOutOfRangeException(nameof(JustBeatedSquareColor));
+
+                _justBeatedSquareColor = value;
+            }
+        }
+
+        private string _passedBeatSquareColor;
+        public string PassedBeatSquareColor
+        {
+            get { return _passedBeatSquareColor; }
+            set {
+                if (!MetronomeSettings.IsColorValid(value))
+                    throw new ArgumentOutOfRangeException(nameof(PassedBeatSquareColor));
+
+                _passedBeatSquareColor = value;
+            }
+        }
+
+        private string _defaultBeatSquareColor;
+        public string DefaultBeatSquareColor
+        {
+            get { return _defaultBeatSquareColor; }
+            set {
+                if (!MetronomeSettings.IsColorValid(value))
+                    throw new ArgumentOutOfRangeException(nameof(DefaultBeatSquareColor));
+
+                _defaultBeatSquareColor = value;
+            }
+        }
+
         public int LatencyMseconds { get; set; } = 20;
 
         public IEnumerable<Copyright> Copyrights { get; set; }
@@ -62,19 +111,29 @@ namespace Metronome
                 Volume,
                 BitsPerMinute,
                 LatencyMseconds,
-                BitsSequenceLength);
+                BitsSequenceLength,
+                
+                BeatTextColor,
+                JustBeatedSquareColor,
+                PassedBeatSquareColor,
+                DefaultBeatSquareColor);
         }
 
         public void FromSettings(MetronomeSettings settings)
         {
             SelectedTickSoundFile = settings.SelectedTickSoundFile;
             SelectedMultimediaDeviceFriendlyName = settings.SelectedMultimediaDeviceFriendlyName;
-
             Volume = MetronomeSettings.IsVolumeValid(settings.Volume) ? settings.Volume: MetronomeSettings.DefaultVolume;
+            LatencyMseconds = settings.LatencyMseconds;
+
+            // Support legacy configs v.1.1
             BitsPerMinute = MetronomeSettings.IsBitsPerMinuteValid(settings.BitsPerMinute) ? settings.BitsPerMinute : MetronomeSettings.DefaultBitsPerMinute;
             BitsSequenceLength = MetronomeSettings.IsBitsSequenceLength(settings.BitsSequenceLength) ? settings.BitsSequenceLength : MetronomeSettings.DefaultBitsSequenceLength;
-
-            LatencyMseconds = settings.LatencyMseconds;
+            // Support legacy configs v.1.2
+            BeatTextColor = MetronomeSettings.IsColorValid(settings.BeatTextColor) ? settings.BeatTextColor : MetronomeSettings.DefaultBeatTextColor;
+            JustBeatedSquareColor = MetronomeSettings.IsColorValid(settings.JustBeatedSquareColor) ? settings.JustBeatedSquareColor : MetronomeSettings.DefaultJustBeatedSquareColor;
+            PassedBeatSquareColor = MetronomeSettings.IsColorValid(settings.PassedBeatSquareColor) ? settings.PassedBeatSquareColor : MetronomeSettings.DefaultPassedBeatSquareColor;
+            DefaultBeatSquareColor = MetronomeSettings.IsColorValid(settings.BeatSquareColor) ? settings.BeatSquareColor : MetronomeSettings.DefaultBeatSquareColor;
         }
     }
 }

@@ -76,8 +76,13 @@
     </ApplicationDefinition>
     <Compile Include="Converters\BitsPerMinuteConverter.cs" />
     <Compile Include="Converters\PercentsConverter.cs" />
+    <Compile Include="Converters\StringToColorConverter.cs" />
     <Compile Include="Converters\TicksFileNameStripperConverter.cs" />
     <Compile Include="Directories.cs" />
+    <Compile Include="Pages\ColorsPageViewModel.cs" />
+    <Compile Include="Pages\ColorsPage.xaml.cs">
+      <DependentUpon>ColorsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -102,6 +107,10 @@
     <Compile Include="Services\IMetronomeService.cs" />
     <Compile Include="Services\MetronomeService.cs" />
     <Compile Include="Services\MetronomeSettings.cs" />
+    <Page Include="Pages\ColorsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\AboutPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +206,10 @@
     <Resource Include="Pictures\1453422794_speaker.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\third-party\ColorBox\ColorBox\ColorBox.csproj">
+      <Project>{40085232-aced-4cbe-945b-90ba8153c151}</Project>
+      <Name>ColorBox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\third-party\HDE.Platform\src\HDE.Platform\HDE.Platform.csproj">
       <Project>{95e06c5c-a612-4e1a-bf91-693e573df5c1}</Project>
       <Name>HDE.Platform</Name>
@@ -207,6 +220,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pictures\ColorWheel_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\1467754721_color-palette_sticker.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

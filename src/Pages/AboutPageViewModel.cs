@@ -29,12 +29,12 @@ namespace Metronome.Pages
         #region Copyrights
 
         public static readonly DependencyProperty CopyrightsProperty = DependencyProperty.Register(
-            "Copyrights", typeof (IEnumerable<Copyright>), typeof (AboutPageViewModel), 
+            "Copyrights", typeof(IEnumerable<Copyright>), typeof(AboutPageViewModel),
             new PropertyMetadata(default(IEnumerable<Copyright>)));
 
         public IEnumerable<Copyright> Copyrights
         {
-            get { return (IEnumerable<Copyright>) GetValue(CopyrightsProperty); }
+            get { return (IEnumerable<Copyright>)GetValue(CopyrightsProperty); }
             set { SetValue(CopyrightsProperty, value); }
         }
 
@@ -43,8 +43,8 @@ namespace Metronome.Pages
         #region Commands
 
         public ICommand GoToProjectWebsiteCommand { get; } = new ViewModelActionCommand<AboutPageViewModel>(
-            vm=> Process.Start("https://metronomesharp.codeplex.com"), 
-            vm=>true);
+            vm => Process.Start("https://metronomesharp.codeplex.com"),
+            vm => true);
 
         #endregion
     }

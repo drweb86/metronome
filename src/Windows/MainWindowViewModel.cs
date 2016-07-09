@@ -49,6 +49,8 @@ namespace Metronome.Windows
             vm => vm.PageUri = PagesHelper.AboutPageUri);
         public ICommand NavigateToAudioDevicePageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
             vm => vm.PageUri = PagesHelper.AudioDevicePageUri);
+        public ICommand NavigateToColorsPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
+            vm => vm.PageUri = PagesHelper.ColorsPageUri);
         public ICommand NavigateToAudioFilesPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(
             vm => vm.PageUri = PagesHelper.AudioFilesPageUri);
         public ICommand NavigateToMainPageCommand { get; } = new ViewModelActionCommand<MainWindowViewModel>(

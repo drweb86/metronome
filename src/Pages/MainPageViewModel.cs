@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
+using System.Windows.Media;
 using HDE.Platform.Wpf.Commands;
 using Metronome.Annotations;
-using Metronome.Pictures;
 using Metronome.Services;
 
 namespace Metronome.Pages
@@ -59,15 +57,27 @@ namespace Metronome.Pages
 
                 if (ColorIndicators == null || e.Mask.Length != ColorIndicators.Count)
                 {
-                    var result = new List<Tuple<int, bool, bool>>();
+                    var result = new List<Tuple<int, string, string>>();
                     for (int i = 0; i < e.Mask.Length; i++)
-                        result.Add(new Tuple<int, bool, bool>(i + 1, e.Mask[i], lastSelectedBit == i));
+                        result.Add(new Tuple<int, string, string>(
+                            i + 1,
+                            Controller.Model.BeatTextColor,
+                            lastSelectedBit == i ? Controller.Instance.Model.JustBeatedSquareColor :
+                                e.Mask[i] ? Controller.Instance.Model.PassedBeatSquareColor :
+                                    Controller.Instance.Model.DefaultBeatSquareColor));
 
-                    ColorIndicators = new ObservableCollection<Tuple<int, bool, bool>>(result);
+                    ColorIndicators = new ObservableCollection<Tuple<int, string, string>>(result);
                     return;
                 }
                 for (int i = 0; i < e.Mask.Length; i++)
-                    ColorIndicators[i] = new Tuple<int, bool, bool>(i + 1, e.Mask[i], lastSelectedBit == i);
+                    ColorIndicators[i] = new Tuple<int, string, string>(
+                        i + 1,
+                        Controller.Model.BeatTextColor,
+                        lastSelectedBit == i
+                            ? Controller.Instance.Model.JustBeatedSquareColor
+                            : e.Mask[i]
+                                ? Controller.Instance.Model.PassedBeatSquareColor
+                                : Controller.Instance.Model.DefaultBeatSquareColor);
             }
         }
 
@@ -125,11 +135,11 @@ namespace Metronome.Pages
         #region Color Indicators
 
         public static readonly DependencyProperty ColorIndicatorsProperty = DependencyProperty.Register(
-            "ColorIndicators", typeof (ObservableCollection<Tuple<int, bool, bool>>), typeof (MainPageViewModel), new PropertyMetadata(default(ObservableCollection<Tuple<int, bool, bool>>)));
+            "ColorIndicators", typeof (ObservableCollection<Tuple<int, string, string>>), typeof (MainPageViewModel), new PropertyMetadata(default(ObservableCollection<Tuple<int, string, string>>)));
 
-        public ObservableCollection<Tuple<int, bool, bool>> ColorIndicators
+        public ObservableCollection<Tuple<int, string, string>> ColorIndicators
         {
-            get { return (ObservableCollection<Tuple<int, bool, bool>>) GetValue(ColorIndicatorsProperty); }
+            get { return (ObservableCollection<Tuple<int, string, string>>) GetValue(ColorIndicatorsProperty); }
             set
             {
                 SetValue(ColorIndicatorsProperty, value); 
