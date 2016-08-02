@@ -1,19 +1,16 @@
-﻿<Window x:Class="Metronome.Windows.MainWindow"
+﻿<Window x:Class="Metronome.Windows.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:windows="clr-namespace:Metronome.Windows"
         xmlns:pages="clr-namespace:Metronome.Pages"
         mc:Ignorable="d"
         Title="Metronome#" MinHeight="350" MinWidth="650" Height="350" Width="650" Closed="OnClosed"
         WindowStartupLocation="CenterScreen"
         Icon="../Pictures/1453069499_Metronome.ico"
         WindowStyle="None"
-        MouseDoubleClick="OnWindowDoubleClick">
-    <Window.DataContext>
-        <windows:MainWindowViewModel />
-    </Window.DataContext>
+        MouseDoubleClick="OnWindowDoubleClick"
+        PreviewKeyDown="OnWindowKeyDown">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

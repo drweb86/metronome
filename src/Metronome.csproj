@@ -39,6 +39,18 @@
     <ApplicationIcon>Pictures\1453069499_Metronome.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>packages\Caliburn.Micro.Core.3.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>packages\Caliburn.Micro.3.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>packages\Caliburn.Micro.3.0.1\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NAudio">
       <HintPath>binaries\NAudio\NAudio.dll</HintPath>
     </Reference>
@@ -56,6 +68,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Caliburn.Micro.3.0.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -79,6 +95,7 @@
     <Compile Include="Converters\StringToColorConverter.cs" />
     <Compile Include="Converters\TicksFileNameStripperConverter.cs" />
     <Compile Include="Directories.cs" />
+    <Compile Include="MetronomeBootstrapper.cs" />
     <Compile Include="Pages\ColorsPageViewModel.cs" />
     <Compile Include="Pages\ColorsPage.xaml.cs">
       <DependentUpon>ColorsPage.xaml</DependentUpon>
@@ -131,7 +148,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="Windows\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -146,13 +163,13 @@
     <Compile Include="Pages\AboutPageViewModel.cs" />
     <Compile Include="Services\BitsPerMinuteHelper.cs" />
     <Compile Include="Styles\LeftBorderIsSelectedButtonConverter.cs" />
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Windows\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Windows\MainWindowViewModel.cs" />
+    <Compile Include="Windows\ShellViewModel.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -165,6 +182,7 @@
     <None Include="License.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pictures\1452998965_volume-70px.png" />

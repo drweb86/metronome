@@ -4,16 +4,16 @@ using System.Windows.Input;
 
 namespace Metronome.Windows
 {
-    public partial class MainWindow
+    public partial class ShellView
     {
-        public MainWindow()
+        public ShellView()
         {
             InitializeComponent();
         }
 
         private void OnClosed(object sender, EventArgs e)
         {
-            var viewModel = (MainWindowViewModel) DataContext;
+            var viewModel = (ShellViewModel) DataContext;
             if (viewModel.CloseApplicationCommand.CanExecute(viewModel))
                 viewModel.CloseApplicationCommand.Execute(viewModel);
         }
@@ -41,6 +41,20 @@ namespace Metronome.Windows
                 WindowState = WindowState.Normal;
             else
                 WindowState = WindowState.Maximized;
+        }
+
+        private void OnWindowKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+                e.Handled = true;
+            }
+            //else if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.Alt)
+            //{
+            //    OnMaximizeMinimize(sender, e);
+            //    e.Handled = true;
+            //}
         }
     }
 }
